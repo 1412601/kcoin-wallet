@@ -4,8 +4,8 @@
 
 ## For development.
 ``
-yarn dev
-cd client/
-yarn start
+yarn dev.
+cd client/.
+yarn start.
 ``
 ## Production link: [update later].
