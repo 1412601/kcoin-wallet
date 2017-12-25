@@ -2,10 +2,10 @@
 
 ## UI framework: https://react.semantic-ui.com/
 
----
-
-**For development:**
+## For development.
+``
 yarn dev
 cd client/
 yarn start
-**Production link: [update later]**
+``
+## Production link: [update later].
