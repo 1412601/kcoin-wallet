@@ -1,21 +1,32 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const passport = require("passport");
+const cookieSession = require("cookie-session");
+const key = require("./config/key");
+
+require("./models/User");
+require("./services/passport");
 
 const app = express();
 
+mongoose.connect(key.mongoURI);
+
 app.use(bodyParser.json());
 
-// app.use(
-//   cookieSession({
-//     maxAge: 30 * 24 * 60 * 60 * 1000,
-//     keys: "this is a key"
-//   })
-// );
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [key.cookieKey]
+  })
+);
 
-app.get("/api/", (req, res) => {
-  res.send({ greeting: "hello" });
-});
+//OAuth
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Routes
+require("./routes/authRoute")(app);
 
 //Production deployment
 if (process.env.NODE_ENV === "production") {
