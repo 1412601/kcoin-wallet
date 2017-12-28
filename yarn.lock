@@ -1095,6 +1095,13 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+node-2fa@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/node-2fa/-/node-2fa-1.1.2.tgz#5bc5691474afe35ae6b3b76459b98b7c20c7158c"
+  dependencies:
+    notp "^2.0.3"
+    thirty-two "0.0.2"
+
 node-pre-gyp@^0.6.39:
   version "0.6.39"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.39.tgz#c00e96860b23c0e1420ac7befc5044e1d78d8649"
@@ -1142,6 +1149,10 @@ normalize-path@^2.0.0, normalize-path@^2.0.1:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-2.1.1.tgz#1ab28b556e198363a8c1a6f7e6fa20137fe6aed9"
   dependencies:
     remove-trailing-separator "^1.0.1"
+
+notp@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/notp/-/notp-2.0.3.tgz#a9fd11e25cfe1ccb39fc6689544ee4c10ef9a577"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -1682,6 +1693,10 @@ term-size@^1.2.0:
   resolved "https://registry.yarnpkg.com/term-size/-/term-size-1.2.0.tgz#458b83887f288fc56d6fffbfad262e26638efa69"
   dependencies:
     execa "^0.7.0"
+
+thirty-two@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/thirty-two/-/thirty-two-0.0.2.tgz#4253e29d8cb058f0480267c5698c0e4927e54b6a"
 
 through@2, through@~2.3, through@~2.3.1:
   version "2.3.8"
