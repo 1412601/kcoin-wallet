@@ -1,5 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const twoFactor = require("node-2fa");
 const key = require("../config/key");
 const mongoose = require("mongoose");
 
@@ -25,10 +26,21 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       const existingUser = await User.findOne({ googleId: profile.id });
+
       if (existingUser) {
         return done(null, existingUser);
       }
-      const user = await new User({ googleId: profile.id }).save();
+
+      const secret = twoFactor.generateSecret({
+        name: "kcoin-wallet",
+        account: profile.emails[0].value
+      });
+
+      const user = await new User({
+        googleId: profile.id,
+        email: profile.emails[0].value,
+        twoFactor: secret
+      }).save();
       done(null, user);
     }
   )

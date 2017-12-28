@@ -2,16 +2,6 @@ const passport = require("passport");
 const twoFactor = require("node-2fa");
 
 module.exports = app => {
-  app.get("/", (req, res) => {
-    const newSecret = twoFactor.generateSecret({
-      name: "Kcoin-Wallet",
-      account: "johndoe"
-    });
-    const token = twoFactor.generateToken("T6ZYUIHLPWFFVTUZ3Z2OD63RKZ7XCY3J");
-    console.log("TOKEN", token);
-    res.send(newSecret);
-  });
-
   app.get(
     "/auth/google",
     passport.authenticate("google", {
@@ -23,9 +13,14 @@ module.exports = app => {
     "/auth/google/callback",
     passport.authenticate("google"),
     (req, res) => {
-      res.redirect("/");
+      res.redirect("/auth/two_factor");
     }
   );
+
+  app.get("/auth/two_factor", (req, res) => {
+    const token = twoFactor.generateToken(req.user.twoFactor.secret);
+    res.send(token);
+  });
 
   app.get("/api/logout", (req, res) => {
     req.logout();
