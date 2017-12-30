@@ -7,6 +7,8 @@ const key = require("./config/key");
 
 require("./models/User");
 require("./services/passport");
+//WEB SOCKET
+require("./services/webSocket");
 
 const app = express();
 
