@@ -16,7 +16,7 @@ const transactionSchema = new Schema({
     date: Date,
     status: {
         type: String,
-        enum: ["Initializing","Processing","Completed"]
+        enum: ["Initialized","Processing","Completed"]
     }
 });
 
