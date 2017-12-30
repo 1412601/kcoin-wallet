@@ -7,6 +7,8 @@ const key = require("./config/key");
 
 require("./models/User");
 require("./services/passport");
+//WEB SOCKET
+require("./services/webSocket");
 
 const app = express();
 
@@ -27,6 +29,7 @@ app.use(passport.session());
 
 //Routes
 require("./routes/authRoute")(app);
+require("./routes/userRoute")(app);
 
 //Production deployment
 if (process.env.NODE_ENV === "production") {
