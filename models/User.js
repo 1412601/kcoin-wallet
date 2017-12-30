@@ -5,6 +5,9 @@ const userSchema = new Schema({
   googleId: String,
   email: String,
   twoFactor: Object,
+  address: String,
+  publicKey: String,
+  privateKey: String,
   balance: { type: Number, default: 0 }
 });
 
