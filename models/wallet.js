@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const walletSchema = new Schema({
-    userId: String,
-    address: String,
-    publicKey: String,
-    privateKey: String,
-    refernceOutputHash: [],
+  _user: { type: Schema.Types.ObjectId, ref: "User" },
+  address: String,
+  publicKey: String,
+  privateKey: String,
+  referenceOutputHash: [String]
 });
 
 mongoose.model("wallets", walletSchema);
