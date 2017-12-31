@@ -8,4 +8,4 @@ const adminSchema = new Schema({
   referenceOutputHash: String
 });
 
-mongoose.model("adminSchem", adminSchema);
+mongoose.model("admin", adminSchema);
