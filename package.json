@@ -20,6 +20,7 @@
     "nodemon": "^1.14.3",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
+    "ursa": "^0.9.4",
     "ws": "^3.3.3"
   }
 }
