@@ -10,8 +10,9 @@ wss.on("open", () => {
   }, 40000);
 });
 
-wss.on("message", data => {
-  console.log("WEB SOCKET", data);
+wss.on("message", dataString => {
+  console.log("WEB SOCKET", dataString);
+  const data = JSON.parse(dataString);
   if (data.type === "block") {
     const { data: blockData } = data;
     const {
