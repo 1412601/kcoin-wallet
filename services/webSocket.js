@@ -17,9 +17,9 @@ wss.on("message", data => {
     const {
       hash: blockHash,
       timestamp: blockTimestamp,
-      transactions: transactions
+      transactions
     } = blockData;
-
+    console.log(blockData);
     transactions.forEach(element => {
       Transaction.findOne({ transHash: element.hash }).then((err, trans) => {
         if (trans) {
