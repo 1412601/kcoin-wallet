@@ -1,4 +1,5 @@
-const Transaction = require("../models/Transaction");
+const mongoose = require("mongoose");
+const Transaction = mongoose.model("transactions");
 const User = require("../models/User");
 
 module.exports = app => {
