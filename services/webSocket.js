@@ -1,7 +1,7 @@
 const WebSocket = require("ws");
 const wss = new WebSocket("wss://api.kcoin.club");
 const mongoose = require("mongoose");
-const Transaction = require("../models/Transaction");
+const Transaction = mongoose.model("transactions");
 
 wss.on("open", () => {
   console.log("OPEN SOCKET");
