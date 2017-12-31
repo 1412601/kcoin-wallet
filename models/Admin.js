@@ -5,7 +5,9 @@ const adminSchema = new Schema({
   address: String,
   publicKey: String,
   privateKey: String,
-  referenceOutputHash: String
+  balance: Number,
+  referenceOutputHash: String,
+  referenceOutputIndex: Number
 });
 
 mongoose.model("admin", adminSchema);
