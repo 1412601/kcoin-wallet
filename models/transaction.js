@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const transactionSchema = new Schema({
-  sender: String,
-  receiver: String,
+  from: String,
+  to: String,
   transHash: String,
+  blockHash: String,
   value: { type: Number, default: 0 },
-  status: Boolean // false: Processing - 1: Complete
+  status: Number
 });
 
 mongoose.model("transactions", transactionSchema);
