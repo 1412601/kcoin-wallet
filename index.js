@@ -6,6 +6,11 @@ const cookieSession = require("cookie-session");
 const key = require("./config/key");
 
 require("./models/User");
+require("./models/Wallet");
+require("./models/Transaction");
+require("./models/ReferenceOutput");
+require("./models/Admin");
+
 require("./services/passport");
 //WEB SOCKET
 require("./services/webSocket");

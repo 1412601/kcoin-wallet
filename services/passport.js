@@ -2,9 +2,11 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const twoFactor = require("node-2fa");
 const key = require("../config/key");
+const axios = require("../utils/axiosHelper");
 const mongoose = require("mongoose");
 
 const User = mongoose.model("users");
+const Wallet = mongoose.model("wallets");
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -41,6 +43,18 @@ passport.use(
         email: profile.emails[0].value,
         twoFactor: secret
       }).save();
+
+      //Create wallet
+      const { data } = await axios.get("/generate-address");
+      const { publicKey, privateKey, address } = data;
+
+      await new Wallet({
+        _user: user.id,
+        publicKey,
+        privateKey,
+        address
+      }).save();
+
       done(null, user);
     }
   )
