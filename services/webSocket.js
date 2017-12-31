@@ -22,12 +22,14 @@ wss.on("message", data => {
 
     transactions.forEach(element => {
       Transaction.findOne({ transHash: element.hash }).then((err, trans) => {
-        trans.blockHash = blockHash;
-        trans.blockTimeStamp = blockTimestamp;
-        trans.status = 2;
+        if (trans) {
+          trans.blockHash = blockHash;
+          trans.blockTimeStamp = blockTimestamp;
+          trans.status = 2;
 
-        trans.save();
-        console.log("UPDATED: ", trans);
+          trans.save();
+          console.log("UPDATED: ", trans);
+        }
       });
     });
   }
