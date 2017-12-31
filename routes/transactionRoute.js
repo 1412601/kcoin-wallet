@@ -2,16 +2,15 @@ const Transaction = require("../models/Transaction");
 const User = require("../models/User");
 
 module.exports = app => {
-  app.get("/transactions/user/:id", () => {
-      User.findById(id).then((err,user) => {
-        if (user) {
-            Transaction.find({$or: [{from: user.address}, {to: user.address}]).then((err, trans) => {
-                if (trans){
-                    res.send(trans);
-                }
-                else res.send("No transaction available.");
-            });
-        }
-      });
+  app.get("/user/transaction", async (req, res) => {
+    const transactions = await Transaction.find({ _user: req.user.id });
+    res.send({ transactions });
+  });
+
+  app.delete("/transaction/:id", async (req, res) => {
+    const transaction = await Transaction.findById(id);
+    if (transaction) {
+      transaction.remove();
+    }
   });
 };
