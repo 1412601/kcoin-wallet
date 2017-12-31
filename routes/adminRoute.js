@@ -54,7 +54,7 @@ module.exports = app => {
       referenceOutputIndex
     } = admin[0];
 
-    const SEND_VALUE = 10;
+    const SEND_VALUE = 1;
 
     //SIGN transaction
     const createTrans = helper.createTransaction(

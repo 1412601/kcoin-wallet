@@ -1,7 +1,7 @@
 const WebSocket = require("ws");
 const wss = new WebSocket("wss://api.kcoin.club");
 const mongoose = require("mongoose");
-const Transaction = require("../models/Transaction");
+const Transaction = mongoose.model("transactions");
 
 wss.on("open", () => {
   console.log("OPEN SOCKET");
@@ -10,8 +10,9 @@ wss.on("open", () => {
   }, 40000);
 });
 
-wss.on("message", data => {
-  console.log("WEB SOCKET", data);
+wss.on("message", dataS => {
+  console.log("WEB SOCKET", dataS);
+  const data = JSON.parse(dataS);
   if (data.type === "block") {
     const { data: blockData } = data;
     const {
@@ -20,17 +21,15 @@ wss.on("message", data => {
       transactions
     } = blockData;
     console.log(blockData);
-    transactions.forEach(element => {
-      Transaction.findOne({ transHash: element.hash }).then((err, trans) => {
-        if (trans) {
-          trans.blockHash = blockHash;
-          trans.blockTimeStamp = blockTimestamp;
-          trans.status = 2;
 
-          trans.save();
-          console.log("UPDATED: ", trans);
-        }
-      });
+    transactions.forEach(async ({ hash }) => {
+      const trans = await Transaction.findOne({ transHash: hash });
+      trans.blockHash = blockHash;
+      trans.blockTimeStamp = blockTimestamp;
+      trans.status = 2;
+
+      await trans.save();
+      console.log("UPDATED: ", trans);
     });
   }
 });
