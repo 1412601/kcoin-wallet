@@ -7,6 +7,8 @@ const transactionSchema = new Schema({
   transHash: String,
   blockHash: String,
   value: { type: Number, default: 0 },
+  blockTimeStamp: Date,
+  transactionTimeStamp: Date,
   status: Number
 });
 
