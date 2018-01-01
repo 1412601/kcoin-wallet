@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 const ReferenceOutput = require("./ReferenceOutput");
 
 const walletSchema = new Schema({
-  _user: { type: Schema.Types.ObjectId, ref: "User" },
+  _user: { type: Schema.Types.ObjectId, ref: "users" },
   address: String,
   publicKey: String,
   privateKey: String,

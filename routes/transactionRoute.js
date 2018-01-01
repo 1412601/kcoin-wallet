@@ -12,7 +12,7 @@ module.exports = app => {
   app.delete("/transaction/:id", async (req, res) => {
     const transaction = await Transaction.findById(req.params.id);
     if (transaction) {
-      transaction.remove();
+      await transaction.remove();
       res.send("Deleted!");
     } else res.send("Not found");
   });

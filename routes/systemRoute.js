@@ -19,7 +19,10 @@ module.exports = app => {
   });
 
   app.get("/system/addresses", async (req, res) => {
-    const allAddress = await Wallet.find({});
+    const allAddress = await Wallet.find({}, "_user address").populate(
+      "_user",
+      "balance"
+    );
     res.send({ allAddress });
   });
 };
