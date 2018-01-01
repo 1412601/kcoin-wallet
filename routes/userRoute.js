@@ -8,6 +8,22 @@ const Wallet = mongoose.model("wallets");
 const Transaction = mongoose.model("transactions");
 
 module.exports = app => {
+  app.get("/api/user/wallet", async (req, res) => {
+    const wallet = await Wallet.findOne({ _user: req.user.id });
+    const user = await User.findById(req.user.id);
+    const { balance } = user;
+    const { address } = wallet;
+
+    const hangingTrans = await Transaction.find({
+      from: req.user.id,
+      status: 1
+    });
+    const availableBalance =
+      balance - hangingTrans.reduce((sum, { value }) => sum + value, 0);
+
+    res.send({ address, balance, availableBalance });
+  });
+
   app.post("/api/initTransaction", async (req, res) => {
     const trans = await new Transaction({
       from: req.user.id,
