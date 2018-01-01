@@ -37,6 +37,7 @@ require("./routes/authRoute")(app);
 require("./routes/userRoute")(app);
 require("./routes/adminRoute")(app);
 require("./routes/transactionRoute")(app);
+require("./routes/systemRoute")(app);
 
 //Production deployment
 if (process.env.NODE_ENV === "production") {

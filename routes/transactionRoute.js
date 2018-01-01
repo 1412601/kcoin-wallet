@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Transaction = mongoose.model("transactions");
-const User = require("../models/User");
 
 module.exports = app => {
   app.get("/user/transaction", async (req, res) => {
