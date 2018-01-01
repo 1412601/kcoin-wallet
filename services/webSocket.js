@@ -6,10 +6,11 @@ const Transaction = mongoose.model("transactions");
 wss.on("open", () => {
   console.log("OPEN SOCKET");
   setInterval(() => {
-    wss.send("something");
-  }, 40000);
+    wss.ping("", false, true);
+  }, 30000);
 });
 
+//UPDATE transactions that blocked
 wss.on("message", dataString => {
   console.log("WEB SOCKET", dataString);
   const data = JSON.parse(dataString);
@@ -20,16 +21,17 @@ wss.on("message", dataString => {
       timestamp: blockTimestamp,
       transactions
     } = blockData;
-    console.log(blockData);
 
     transactions.forEach(async ({ hash }) => {
       const trans = await Transaction.findOne({ transHash: hash });
-      trans.blockHash = blockHash;
-      trans.blockTimeStamp = blockTimestamp;
-      trans.status = 2;
+      if (trans) {
+        trans.blockHash = blockHash;
+        trans.blockTimeStamp = blockTimestamp;
+        trans.status = 2;
 
-      await trans.save();
-      console.log("UPDATED: ", trans);
+        await trans.save();
+        console.log("UPDATED: ", trans);
+      }
     });
   }
 });
