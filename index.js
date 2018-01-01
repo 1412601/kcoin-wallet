@@ -36,6 +36,7 @@ app.use(passport.session());
 require("./routes/authRoute")(app);
 require("./routes/userRoute")(app);
 require("./routes/adminRoute")(app);
+require("./routes/transactionRoute")(app);
 
 //Production deployment
 if (process.env.NODE_ENV === "production") {
