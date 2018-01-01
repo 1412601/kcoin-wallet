@@ -5,7 +5,8 @@ const userSchema = new Schema({
   googleId: String,
   email: String,
   twoFactor: Object,
-  balance: { type: Number, default: 0 }
+  balance: { type: Number, default: 0 },
+  isActivated: { type: Boolean, default: false }
 });
 
 mongoose.model("users", userSchema);

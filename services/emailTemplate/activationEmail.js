@@ -1,6 +1,6 @@
 const key = require("../../config/key");
 
-module.exports = email => {
+module.exports = id => {
   return `
 <html>
 <body>
@@ -9,9 +9,9 @@ module.exports = email => {
     <h3>Let's confirm your email address</h3>
     <p>By clicking on the following link, you are confirming your email address:</p>
     <div>
-      <a href="${key.redirectDomain}/api/emails/${
-    email.id
-  }/activate">Confirm Email Address</a>
+      <a href="${
+        key.redirectDomain
+      }/api/user/${id}/activate">Confirm Email Address</a>
     </div>
   </div>
 </body>
