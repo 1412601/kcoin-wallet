@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Grid, Segment, Menu, Button } from "semantic-ui-react";
+import { Grid, Segment, Menu } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
 import GeneralInfo from "./GeneralInfo";
 import Transactions from "./Transactions/index";
+import InitTransaction from "./InitTransaction";
 class Home extends Component {
   state = {
     showQR: false,
@@ -33,7 +34,7 @@ class Home extends Component {
   renderMenu() {
     const { activeItem } = this.state;
     return (
-      <Menu fluid vertical pointing>
+      <Menu fluid vertical pointing size="massive">
         <Menu.Item>
           <Menu.Header>Your account</Menu.Header>
           <Menu.Menu>
@@ -45,11 +46,6 @@ class Home extends Component {
             <Menu.Item
               name="Transactions"
               active={activeItem === "Transactions"}
-              onClick={this.handleItemClick}
-            />
-            <Menu.Item
-              name="sendKcoin"
-              active={activeItem === "sendKcoin"}
               onClick={this.handleItemClick}
             />
           </Menu.Menu>
@@ -65,14 +61,7 @@ class Home extends Component {
           <Grid.Column width={4}>{this.renderMenu()}</Grid.Column>
           <Grid.Column width={12}>{this.state.currentContent}</Grid.Column>
         </Grid>
-        <Button
-          circular
-          icon="plus"
-          size="massive"
-          floated="right"
-          color="teal"
-          style={{ margin: 10 }}
-        />
+        <InitTransaction />
       </Segment>
     );
   }
