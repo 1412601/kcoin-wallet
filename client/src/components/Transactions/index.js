@@ -3,6 +3,8 @@ import { Tab } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 
+import "./styles.css";
+
 import Send from "./Send";
 import Receive from "./Receive";
 

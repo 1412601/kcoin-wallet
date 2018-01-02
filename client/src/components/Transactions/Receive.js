@@ -10,9 +10,9 @@ class Receive extends Component {
   render() {
     const { receive } = this.props;
     return (
-      <div>
+      <div className="myTable">
         {receive === null ? (
-          <Segment style={{ height: "80vh" }}>
+          <Segment style={{ height: "60vh" }}>
             <Dimmer active inverted>
               <Loader inverted>Loading</Loader>
             </Dimmer>
@@ -47,11 +47,11 @@ class Receive extends Component {
                     <Table.Cell>{value} Kcoin</Table.Cell>
                     <Table.Cell>{transHash}</Table.Cell>
                     <Table.Cell>
-                      {transactionTimeStamp.toLocaleDateString()}
+                      {new Date(transactionTimeStamp).toUTCString()}
                     </Table.Cell>
                     <Table.Cell>{blockHash}</Table.Cell>
                     <Table.Cell>
-                      {blockTimeStamp.toLocaleDateString()}
+                      {new Date(blockTimeStamp).toUTCString()}
                     </Table.Cell>
                   </Table.Row>
                 )
