@@ -10,21 +10,56 @@ module.exports = app => {
     res.send(allUser);
   });
 
+  app.get("/api/system/allUsers", async (req, res) => {
+    const { page } = req.query;
+    const MAX_RECORDS = 5;
+    const allUser = await User.find({}, "email balance");
+    const { length: count } = allUser;
+    const numbOfPages = Math.ceil(count / MAX_RECORDS);
+    const users = allUser.slice((page - 1) * MAX_RECORDS, page * MAX_RECORDS);
+    res.send({ users, numbOfPages, MAX_RECORDS });
+  });
+
   app.get("/api/system/transactions", async (req, res) => {
+    const { page } = req.query;
+    const MAX_RECORDS = 5;
     const allTransactions = await Transaction.find(
       {},
       "from to value status transactionTimeStamp"
+    ).sort({ transactionTimeStamp: "desc" });
+    const { length: count } = allTransactions;
+    const numbOfPages = Math.ceil(count / MAX_RECORDS);
+
+    const trans = await Promise.all(
+      allTransactions
+        .slice((page - 1) * MAX_RECORDS, page * MAX_RECORDS)
+        .map(async trans => {
+          const { from, to } = trans;
+          const fromUser =
+            from === "system" ? "System" : await User.findById(from);
+          const toUser = await User.findById(to);
+          trans.from = from === "system" ? "System" : fromUser.email;
+          trans.to = toUser.email;
+          return trans;
+        })
     );
-    allTransactions.reverse();
-    res.send(allTransactions);
+    res.send({ trans, numbOfPages, MAX_RECORDS });
   });
 
   app.get("/api/system/addresses", async (req, res) => {
+    const { page } = req.query;
+    const MAX_RECORDS = 5;
     const allAddress = await Wallet.find({}, "_user address").populate(
       "_user",
       "email balance"
     );
-    res.send(allAddress);
+    const { length: count } = allAddress;
+    const numbOfPages = Math.ceil(count / MAX_RECORDS);
+    const addresses = allAddress.slice(
+      (page - 1) * MAX_RECORDS,
+      page * MAX_RECORDS
+    );
+    res.send({ addresses, numbOfPages, MAX_RECORDS });
   });
 
   app.get("/api/system/statistics", async (req, res) => {

@@ -3,7 +3,9 @@ import {
   FETCH_SYSTEM_STATISTICS,
   FETCH_ALL_USERS_INFORMATION,
   FETCH_ALL_TRANSACTION_INFORMATION,
-  FETCH_ALL_ADDRESS_INFORMATION
+  FETCH_ADDRESS_PAGE,
+  FETCH_TRANSACTION_PAGE,
+  FETCH_USER_PAGE
 } from "./constants";
 
 export const fetchSystemStatistics = () => async dispatch => {
@@ -16,12 +18,22 @@ export const fetchAllUsersInformation = () => async dispatch => {
   dispatch({ type: FETCH_ALL_USERS_INFORMATION, payload: data });
 };
 
+export const fetchUsersPage = page => async dispatch => {
+  const { data } = await axios.get("/api/system/allUsers?page=" + page);
+  dispatch({ type: FETCH_USER_PAGE, payload: data });
+};
+
 export const fetchAllTransactionInformation = () => async dispatch => {
   const { data } = await axios.get("/api/system/transactions");
   dispatch({ type: FETCH_ALL_TRANSACTION_INFORMATION, payload: data });
 };
 
-export const fetchAllAddressesInformation = () => async dispatch => {
-  const { data } = await axios.get("/api/system/addresses");
-  dispatch({ type: FETCH_ALL_ADDRESS_INFORMATION, payload: data });
+export const fetchTransactionPage = page => async dispatch => {
+  const { data } = await axios.get("/api/system/transactions?page=" + page);
+  dispatch({ type: FETCH_TRANSACTION_PAGE, payload: data });
+};
+
+export const fetchAddressesPage = page => async dispatch => {
+  const { data } = await axios.get("/api/system/addresses?page=" + page);
+  dispatch({ type: FETCH_ADDRESS_PAGE, payload: data });
 };
