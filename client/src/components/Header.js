@@ -16,12 +16,9 @@ class Header extends Component {
   renderContent() {
     return this.props.auth === null ? (
       <Menu.Item>
-        {/* <Button color="google plus" as="a" href="/auth/google">
+        <Button color="google plus" as="a" href="/auth/google">
           <Icon name="google plus" /> Login with Google
-        </Button> */}
-        <a className="ui google plus button" href="/auth/google">
-          Login with google
-        </a>
+        </Button>
       </Menu.Item>
     ) : (
       [
