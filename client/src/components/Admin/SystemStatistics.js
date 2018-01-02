@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Message } from "semantic-ui-react";
+import { Message, Dimmer, Loader } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 
@@ -9,20 +9,26 @@ class SystemStatistics extends Component {
   }
 
   render() {
-    const statistics = this.props.statistics || {
-      totalUser: 0,
-      totalTransaction: 0,
-      systemBalance: 0
-    };
+    const { statistics } = this.props;
     return (
-      <Message
-        header="System Statistics"
-        list={[
-          "Total Users: " + statistics.totalUser,
-          "Total Transactions: " + statistics.totalTransaction,
-          "System Balance: " + statistics.systemBalance
-        ]}
-      />
+      <div>
+        {statistics === null ? (
+          <Dimmer active inverted>
+            <Loader />
+          </Dimmer>
+        ) : (
+          <Message
+            positive
+            size="big"
+            header="System Statistics"
+            list={[
+              "Total Users: " + statistics.totalUser,
+              "Total Transactions: " + statistics.totalTransaction,
+              "System Balance: " + statistics.systemBalance + " KCoins"
+            ]}
+          />
+        )}
+      </div>
     );
   }
 }
