@@ -87,7 +87,7 @@ module.exports = app => {
     }
   });
 
-  app.delete("/transaction/:id", async (req, res) => {
+  app.delete("/api/transaction/:id", async (req, res) => {
     const transaction = await Transaction.findById(req.params.id);
     if (transaction) {
       await transaction.remove();
