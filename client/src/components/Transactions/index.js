@@ -7,6 +7,7 @@ import "./styles.css";
 
 import Send from "./Send";
 import Receive from "./Receive";
+import Pending from "./Pending";
 
 const panes = [
   {
@@ -31,7 +32,11 @@ const panes = [
   },
   {
     menuItem: "Pending",
-    render: () => <Tab.Pane attached={false}>Tab 4 Content</Tab.Pane>
+    render: props => (
+      <Tab.Pane attached={false}>
+        <Pending {...props.functions} />
+      </Tab.Pane>
+    )
   }
 ];
 
