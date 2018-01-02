@@ -6,6 +6,7 @@ import * as action from "../actions";
 
 import Home from "./Home";
 import HeaderApp from "./Header";
+import Admin from "./Admin";
 
 const LandingPage = () => (
   <div style={{ textAlign: "center" }}>
@@ -32,6 +33,7 @@ class App extends Component {
             path="/"
             component={auth === null ? LandingPage : Home}
           />
+          <Route exact path="/admin" component={Admin} />
         </Container>
       </BrowserRouter>
     );
