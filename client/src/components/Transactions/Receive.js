@@ -22,7 +22,7 @@ class Receive extends Component {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>From user</Table.HeaderCell>
-                <Table.HeaderCell>Value</Table.HeaderCell>
+                <Table.HeaderCell>Value </Table.HeaderCell>
                 <Table.HeaderCell>Transaction hash</Table.HeaderCell>
                 <Table.HeaderCell>Transaction time</Table.HeaderCell>
                 <Table.HeaderCell>Block hash</Table.HeaderCell>
@@ -42,14 +42,14 @@ class Receive extends Component {
                   },
                   index
                 ) => (
-                  <Table.Row>
+                  <Table.Row key={index}>
                     <Table.Cell>{from}</Table.Cell>
-                    <Table.Cell>{value} Kcoin</Table.Cell>
-                    <Table.Cell>{transHash}</Table.Cell>
+                    <Table.Cell>{value}Kcoin</Table.Cell>
+                    <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
                       {new Date(transactionTimeStamp).toUTCString()}
                     </Table.Cell>
-                    <Table.Cell>{blockHash}</Table.Cell>
+                    <Table.Cell>{blockHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
                       {new Date(blockTimeStamp).toUTCString()}
                     </Table.Cell>
