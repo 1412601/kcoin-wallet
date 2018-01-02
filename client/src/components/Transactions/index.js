@@ -8,6 +8,7 @@ import "./styles.css";
 import Send from "./Send";
 import Receive from "./Receive";
 import Pending from "./Pending";
+import Init from "./Init";
 
 const panes = [
   {
@@ -28,7 +29,11 @@ const panes = [
   },
   {
     menuItem: "Initial",
-    render: () => <Tab.Pane attached={false}>Tab 3 Content</Tab.Pane>
+    render: props => (
+      <Tab.Pane attached={false}>
+        <Init {...props.functions} />
+      </Tab.Pane>
+    )
   },
   {
     menuItem: "Pending",
