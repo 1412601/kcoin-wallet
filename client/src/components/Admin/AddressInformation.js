@@ -23,7 +23,7 @@ class AddressInformation extends Component {
         <Table.Body>
           {addresses.length !== 0
             ? addresses.map(({ address, _user }, index) => (
-                <Table.Row>
+                <Table.Row key={index}>
                   <Table.Cell>{index}</Table.Cell>
                   <Table.Cell>{address}</Table.Cell>
                   <Table.Cell>{_user.email}</Table.Cell>
@@ -34,7 +34,7 @@ class AddressInformation extends Component {
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell colSpan="3">
+            <Table.HeaderCell colSpan="4">
               <Menu floated="right" pagination>
                 <Menu.Item as="a" icon>
                   <Icon name="left chevron" />

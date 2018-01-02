@@ -10,6 +10,11 @@ class TransactionInformation extends Component {
 
   render() {
     const { trans } = this.props;
+    const statusString = {
+      0: "Initilized",
+      1: "Pending",
+      2: "Completed"
+    };
     return (
       <Table celled striped>
         <Table.Header>
@@ -26,13 +31,15 @@ class TransactionInformation extends Component {
           {trans.length !== 0
             ? trans.map(
                 ({ from, to, value, status, transactionTimeStamp }, index) => (
-                  <Table.Row>
+                  <Table.Row key={index}>
                     <Table.Cell>{index}</Table.Cell>
                     <Table.Cell>{from}</Table.Cell>
                     <Table.Cell>{to}</Table.Cell>
-                    <Table.Cell>{value}</Table.Cell>
-                    <Table.Cell>{status}</Table.Cell>
-                    <Table.Cell>{transactionTimeStamp}</Table.Cell>
+                    <Table.Cell>{value} Kcoins</Table.Cell>
+                    <Table.Cell>{statusString[status]}</Table.Cell>
+                    <Table.Cell>
+                      {new Date(transactionTimeStamp).toUTCString()}
+                    </Table.Cell>
                   </Table.Row>
                 )
               )
@@ -40,7 +47,7 @@ class TransactionInformation extends Component {
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell colSpan="3">
+            <Table.HeaderCell colSpan="6">
               <Menu floated="right" pagination>
                 <Menu.Item as="a" icon>
                   <Icon name="left chevron" />

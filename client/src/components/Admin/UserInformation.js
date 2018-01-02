@@ -22,7 +22,7 @@ class UserInformation extends Component {
         <Table.Body>
           {users.length !== 0
             ? users.map(({ email, balance }, index) => (
-                <Table.Row>
+                <Table.Row key={index}>
                   <Table.Cell>{index}</Table.Cell>
                   <Table.Cell>{email}</Table.Cell>
                   <Table.Cell>{balance}</Table.Cell>
