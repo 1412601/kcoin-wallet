@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const key = require("./config/key");
 
 require("./models/User");
+//Wallet
 require("./models/Wallet");
 require("./models/Transaction");
 require("./models/ReferenceOutput");
