@@ -14,9 +14,9 @@ import { connect } from "react-redux";
 import QRCode from "qrcode.react";
 
 class GeneralInfo extends Component {
-  state = { showQR: false };
+  state = { showQR: true };
   render() {
-    const user = this.props.user;
+    const { user } = this.props;
     const { showQR } = this.state;
     return (
       <Segment padded="very" style={{ height: "80vh" }}>
@@ -92,6 +92,6 @@ class GeneralInfo extends Component {
   }
 }
 
-export default connect(({ userReducer }) => ({ user: userReducer }))(
-  GeneralInfo
-);
+export default connect(({ userReducer }) => ({
+  user: userReducer.wallet
+}))(GeneralInfo);
