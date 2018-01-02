@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "node-2fa": "^1.1.2",
     "qrcode.react": "^0.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
