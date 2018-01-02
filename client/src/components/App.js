@@ -8,13 +8,20 @@ import Home from "./Home";
 import HeaderApp from "./Header";
 import Admin from "./Admin";
 
-const LandingPage = () => (
-  <div style={{ textAlign: "center" }}>
-    <Header as="h2" icon textAlign="center">
-      <Header.Content>Welcome to Kcoin wallet</Header.Content>
-    </Header>
-    <div>Login to continue</div>
-  </div>
+const LandingPage = connect(({ authReducer }) => ({ auth: authReducer }))(
+  props => {
+    if (props.auth !== null) {
+      props.history.push("/home");
+    }
+    return (
+      <div style={{ textAlign: "center" }}>
+        <Header as="h2" icon textAlign="center">
+          <Header.Content>Welcome to Kcoin wallet</Header.Content>
+        </Header>
+        <div>Login to continue</div>
+      </div>
+    );
+  }
 );
 
 class App extends Component {
@@ -23,16 +30,12 @@ class App extends Component {
   }
 
   render() {
-    const { auth } = this.props;
     return (
       <BrowserRouter>
         <Container>
           <HeaderApp />
-          <Route
-            exact
-            path="/"
-            component={auth === null ? LandingPage : Home}
-          />
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/home" component={Home} />
           <Route exact path="/admin" component={Admin} />
         </Container>
       </BrowserRouter>
@@ -40,6 +43,4 @@ class App extends Component {
   }
 }
 
-export default connect(({ authReducer }) => ({ auth: authReducer }), action)(
-  App
-);
+export default connect(() => ({}), action)(App);

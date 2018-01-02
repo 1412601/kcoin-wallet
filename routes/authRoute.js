@@ -3,7 +3,6 @@ const User = mongoose.model("users");
 const Mailer = require("../services/Mailer");
 const ActivationMailTemplate = require("../services/emailTemplate/activationEmail");
 const passport = require("passport");
-const twoFactor = require("node-2fa");
 
 module.exports = app => {
   app.get(
@@ -17,15 +16,9 @@ module.exports = app => {
     "/auth/google/callback",
     passport.authenticate("google"),
     (req, res) => {
-      // res.redirect("/auth/two_factor");
       res.redirect("/");
     }
   );
-
-  app.get("/auth/two_factor", (req, res) => {
-    const token = twoFactor.generateToken(req.user.twoFactor.secret);
-    res.send(token);
-  });
 
   app.get("/api/logout", (req, res) => {
     req.logout();
