@@ -4,12 +4,14 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 
 import GeneralInfo from "./GeneralInfo";
+import Transactions from "./Transactions/index";
 class Home extends Component {
   state = {
     showQR: false,
     activeItem: "General",
     content: {
-      General: <GeneralInfo />
+      General: <GeneralInfo />,
+      Transactions: <Transactions />
     }
   };
 
@@ -68,4 +70,4 @@ class Home extends Component {
   }
 }
 
-export default connect(({}) => ({}), actions)(Home);
+export default connect(() => ({}), actions)(Home);
