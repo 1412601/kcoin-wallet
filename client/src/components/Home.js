@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Container, Menu } from "semantic-ui-react";
+import { Grid, Segment, Menu, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
@@ -60,12 +60,20 @@ class Home extends Component {
 
   render() {
     return (
-      <Container padded="very">
+      <Segment padded clearing>
         <Grid>
           <Grid.Column width={4}>{this.renderMenu()}</Grid.Column>
           <Grid.Column width={12}>{this.state.currentContent}</Grid.Column>
         </Grid>
-      </Container>
+        <Button
+          circular
+          icon="plus"
+          size="massive"
+          floated="right"
+          color="teal"
+          style={{ margin: 10 }}
+        />
+      </Segment>
     );
   }
 }

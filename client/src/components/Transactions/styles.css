@@ -1,0 +1,4 @@
+.myTable {
+  overflow: auto !important;
+  height: 60vh !important;
+}

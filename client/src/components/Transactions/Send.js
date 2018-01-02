@@ -10,9 +10,9 @@ class Send extends Component {
   render() {
     const { send } = this.props;
     return (
-      <div>
+      <div className="myTable">
         {send === null ? (
-          <Segment style={{ height: "80vh" }}>
+          <Segment style={{ height: "60vh" }}>
             <Dimmer active inverted>
               <Loader inverted>Loading</Loader>
             </Dimmer>
@@ -22,7 +22,7 @@ class Send extends Component {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>To user</Table.HeaderCell>
-                <Table.HeaderCell>Value</Table.HeaderCell>
+                <Table.HeaderCell>Value </Table.HeaderCell>
                 <Table.HeaderCell>Transaction hash</Table.HeaderCell>
                 <Table.HeaderCell>Transaction time</Table.HeaderCell>
                 <Table.HeaderCell>Block hash</Table.HeaderCell>
@@ -42,16 +42,16 @@ class Send extends Component {
                   },
                   index
                 ) => (
-                  <Table.Row>
+                  <Table.Row key={index}>
                     <Table.Cell>{to}</Table.Cell>
-                    <Table.Cell>{value} Kcoin</Table.Cell>
-                    <Table.Cell>{transHash}</Table.Cell>
+                    <Table.Cell>{value}Kcoin</Table.Cell>
+                    <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
-                      {transactionTimeStamp.toLocaleDateString()}
+                      {new Date(transactionTimeStamp).toUTCString()}
                     </Table.Cell>
-                    <Table.Cell>{blockHash}</Table.Cell>
+                    <Table.Cell>{blockHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
-                      {blockTimeStamp.toLocaleDateString()}
+                      {new Date(blockTimeStamp).toUTCString()}
                     </Table.Cell>
                   </Table.Row>
                 )
