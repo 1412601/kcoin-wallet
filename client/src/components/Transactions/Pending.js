@@ -24,33 +24,17 @@ class Pending extends Component {
                 <Table.HeaderCell>Value </Table.HeaderCell>
                 <Table.HeaderCell>Transaction hash</Table.HeaderCell>
                 <Table.HeaderCell>Transaction time</Table.HeaderCell>
-                <Table.HeaderCell>Block hash</Table.HeaderCell>
-                <Table.HeaderCell>Block time</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {pending.map(
-                (
-                  {
-                    to,
-                    value,
-                    transHash,
-                    transactionTimeStamp,
-                    blockHash,
-                    blockTimeStamp
-                  },
-                  index
-                ) => (
+                ({ to, value, transHash, transactionTimeStamp }, index) => (
                   <Table.Row key={index}>
                     <Table.Cell>{to}</Table.Cell>
                     <Table.Cell>{value}Kcoin</Table.Cell>
                     <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
                       {new Date(transactionTimeStamp).toUTCString()}
-                    </Table.Cell>
-                    <Table.Cell>{blockHash.substring(0, 10)}...</Table.Cell>
-                    <Table.Cell>
-                      {new Date(blockTimeStamp).toUTCString()}
                     </Table.Cell>
                   </Table.Row>
                 )
