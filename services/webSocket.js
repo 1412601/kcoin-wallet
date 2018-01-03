@@ -26,7 +26,8 @@ wss.on("message", dataString => {
       const trans = await Transaction.findOne({ transHash: hash });
       if (trans) {
         trans.blockHash = blockHash;
-        trans.blockTimeStamp = blockTimestamp;
+        //Convert timestamp -> Date
+        trans.blockTimeStamp = blockTimestamp * 1000;
         trans.status = 2;
 
         await trans.save();
