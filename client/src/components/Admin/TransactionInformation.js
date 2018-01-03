@@ -48,7 +48,7 @@ class TransactionInformation extends Component {
                   <Table.Cell>{value} Kcoins</Table.Cell>
                   <Table.Cell>{statusString[status]}</Table.Cell>
                   <Table.Cell>
-                    {new Date(transactionTimeStamp).toUTCString()}
+                    {new Date(transactionTimeStamp).toLocaleString()}
                   </Table.Cell>
                 </Table.Row>
               )

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Segment, Loader, Dimmer } from "semantic-ui-react";
+import { Table, Segment, Loader, Dimmer, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import Modal2FA from "../Modal2FA";
 
@@ -45,8 +45,11 @@ class Init extends Component {
                     <Table.Cell>{to}</Table.Cell>
                     <Table.Cell>{value} Kcoin</Table.Cell>
                     <Table.Cell>
-                      <Modal2FA confirm id={_id} />
-                      <Modal2FA id={_id} />
+                      <Button.Group>
+                        <Modal2FA confirm id={_id} />
+                        <Button.Or />
+                        <Modal2FA id={_id} />
+                      </Button.Group>
                     </Table.Cell>
                   </Table.Row>
                 )

@@ -34,7 +34,7 @@ class Pending extends Component {
                     <Table.Cell>{value}Kcoin</Table.Cell>
                     <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
-                      {new Date(transactionTimeStamp).toUTCString()}
+                      {new Date(transactionTimeStamp).toLocaleString()}
                     </Table.Cell>
                   </Table.Row>
                 )

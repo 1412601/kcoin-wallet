@@ -47,11 +47,11 @@ class Send extends Component {
                     <Table.Cell>{value}Kcoin</Table.Cell>
                     <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
-                      {new Date(transactionTimeStamp).toUTCString()}
+                      {new Date(transactionTimeStamp).toLocaleString()}
                     </Table.Cell>
                     <Table.Cell>{blockHash.substring(0, 10)}...</Table.Cell>
                     <Table.Cell>
-                      {new Date(blockTimeStamp).toUTCString()}
+                      {new Date(blockTimeStamp).toLocaleString()}
                     </Table.Cell>
                   </Table.Row>
                 )
