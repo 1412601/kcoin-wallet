@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   Button,
   Header,
-  Icon,
   Modal,
   Image,
   Input,
@@ -48,20 +47,12 @@ class ModalConfirm extends Component {
       <Modal
         trigger={
           confirm ? (
-            <Button
-              icon
-              color="green"
-              onClick={() => this.setState({ showModal: true })}
-            >
-              <Icon name="checkmark" size="large" />
+            <Button positive onClick={() => this.setState({ showModal: true })}>
+              Confirm
             </Button>
           ) : (
-            <Button
-              icon
-              secondary
-              onClick={() => this.setState({ showModal: true })}
-            >
-              <Icon name="cancel" size="large" />
+            <Button onClick={() => this.setState({ showModal: true })}>
+              Cancel
             </Button>
           )
         }
