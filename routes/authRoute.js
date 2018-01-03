@@ -29,7 +29,7 @@ module.exports = app => {
     res.send(req.user);
   });
 
-  app.post("/api/email/activate", async (req, res) => {
+  app.get("/api/email/activate", async (req, res) => {
     const subject = "KCoin activation email";
     const recipients = [{ email: req.user.email }];
 
@@ -54,7 +54,7 @@ module.exports = app => {
       } else {
         user.isActivated = true;
         await user.save();
-        res.send({ msg: "Activation is successfull." });
+        res.redirect("/");
       }
     } else res.send({ msg: "User not found" });
   });
