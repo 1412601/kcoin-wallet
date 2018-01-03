@@ -17,6 +17,9 @@ class Home extends Component {
   };
 
   componentWillMount() {
+    if (this.props.auth === null) {
+      this.props.history.push("/");
+    }
     this.setState({ currentContent: this.state.content.General });
   }
 
@@ -67,4 +70,6 @@ class Home extends Component {
   }
 }
 
-export default connect(() => ({}), actions)(Home);
+export default connect(({ authReducer }) => ({ auth: authReducer }), actions)(
+  Home
+);
