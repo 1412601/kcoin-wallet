@@ -9,6 +9,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import axios from "axios";
 
 class Header extends Component {
   state = {};
@@ -22,8 +23,13 @@ class Header extends Component {
       </Menu.Item>
     ) : (
       [
+        <Menu.Item key={0}>
+          <Button color="red" onClick={this.handleGetCoin}>
+            FREE KCoin <Icon name="bitcoin" />
+          </Button>
+        </Menu.Item>,
         <Menu.Item key={1}>
-          <div>Email: {this.props.auth.email}</div>
+          <div>{this.props.auth.email}</div>
         </Menu.Item>,
         <Menu.Item key={2}>
           <Button primary as="a" href="/api/logout">
@@ -33,6 +39,15 @@ class Header extends Component {
       ]
     );
   }
+
+  handleGetCoin = async () => {
+    try {
+      const { data } = await axios.get("/api/admin/getCoin");
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   render() {
     return (
