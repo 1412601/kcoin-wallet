@@ -40,8 +40,8 @@ module.exports = app => {
     }
   });
 
-  app.post("/admin/buyCash", async (req, res) => {
-    const { id } = req.body;
+  app.get("/api/admin/getCoin", async (req, res) => {
+    const { id } = req.user;
     const user = await User.findById(id);
     const userWallet = await Wallet.findOne({ _user: id });
     const admin = await Admin.find();
@@ -54,7 +54,7 @@ module.exports = app => {
       referenceOutputIndex
     } = admin[0];
 
-    const SEND_VALUE = 1;
+    const SEND_VALUE = 10;
 
     //SIGN transaction
     const createTrans = helper.createTransaction(
