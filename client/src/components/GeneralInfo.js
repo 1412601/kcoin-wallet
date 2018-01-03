@@ -19,7 +19,7 @@ class GeneralInfo extends Component {
     const { user } = this.props;
     const { showQR } = this.state;
     return (
-      <Segment padded="very" style={{ height: "80vh" }}>
+      <Segment padded="very" style={{ minHeight: "80vh" }}>
         {user === null ? (
           <Dimmer active inverted>
             <Loader />
