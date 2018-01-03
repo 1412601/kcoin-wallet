@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "concurrently \"nodemon index.js\" \"yarn webhook\"",
+    "webhook": "forever webhook.js",
     "heroku-postbuild":
       "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
@@ -29,5 +30,10 @@
     "sendgrid": "^5.2.3",
     "ursa": "^0.9.4",
     "ws": "^3.3.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "forever": "^0.15.3",
+    "localtunnel": "^1.8.3"
   }
 }

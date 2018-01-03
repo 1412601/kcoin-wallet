@@ -7,5 +7,5 @@ module.exports = {
   googleClientSecret: "R8RRXD-fHECqFW0oGAp_VqTu",
   sendGridKey:
     "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",
-  redirectDomain: "Temp"
+  redirectDomain: "https://kcoin-wallet.herokuapp.com"
 };
