@@ -17,7 +17,7 @@ class Home extends Component {
   };
 
   componentWillMount() {
-    if (this.props.auth === null) {
+    if (this.props.auth === null || !this.props.auth.isActivated) {
       this.props.history.push("/");
     }
     this.setState({ currentContent: this.state.content.General });
