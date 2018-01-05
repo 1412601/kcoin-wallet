@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("users");
+const Admin = mongoose.model("admin");
 const Mailer = require("../services/Mailer");
 const ActivationMailTemplate = require("../services/emailTemplate/activationEmail");
 const passport = require("passport");
@@ -57,5 +58,16 @@ module.exports = app => {
         res.redirect("/");
       }
     } else res.send({ msg: "User not found" });
+  });
+
+  app.post("/auth/admin", async (req, res) => {
+    const { username, password } = req.body;
+    const admin = await Admin.find({ username, passport });
+
+    if (admin === null) {
+      res.status(401).send({ error: "Wrong username or password" });
+    } else {
+      res.status(200).send({ message: "Success" });
+    }
   });
 };
