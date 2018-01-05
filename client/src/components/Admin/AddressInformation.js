@@ -22,6 +22,9 @@ class AddressInformation extends Component {
     const { addresses, numbOfPages, MAX_RECORDS } = this.props.addresses;
     return (
       <Segment style={{ minHeight: "80vh", overFlow: "auto" }}>
+        <Dimmer active={addresses.length === 0} inverted>
+          <Loader />
+        </Dimmer>
         <Table celled striped size="small">
           <Table.Header>
             <Table.Row>
@@ -32,22 +35,16 @@ class AddressInformation extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {addresses.length !== 0 ? (
-              addresses.map(({ address, _user }, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    {(this.state.page - 1) * MAX_RECORDS + index + 1}
-                  </Table.Cell>
-                  <Table.Cell>{address}</Table.Cell>
-                  <Table.Cell>{_user.email}</Table.Cell>
-                  <Table.Cell>{_user.balance} KCoins</Table.Cell>
-                </Table.Row>
-              ))
-            ) : (
-              <Dimmer active inverted>
-                <Loader />
-              </Dimmer>
-            )}
+            {addresses.map(({ address, _user }, index) => (
+              <Table.Row key={index}>
+                <Table.Cell>
+                  {(this.state.page - 1) * MAX_RECORDS + index + 1}
+                </Table.Cell>
+                <Table.Cell>{address}</Table.Cell>
+                <Table.Cell>{_user.email}</Table.Cell>
+                <Table.Cell>{_user.balance} KCoins</Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
           <Table.Footer>
             {numbOfPages > 1 ? (

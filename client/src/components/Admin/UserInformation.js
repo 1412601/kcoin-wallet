@@ -22,6 +22,9 @@ class UserInformation extends Component {
     const { users, numbOfPages, MAX_RECORDS } = this.props.users;
     return (
       <Segment style={{ minHeight: "80vh", overFlow: "auto" }}>
+        <Dimmer active={users.length === 0} inverted>
+          <Loader />
+        </Dimmer>
         <Table celled striped>
           <Table.Header>
             <Table.Row>
@@ -31,21 +34,15 @@ class UserInformation extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {users.length !== 0 ? (
-              users.map(({ email, balance }, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>
-                    {(this.state.page - 1) * MAX_RECORDS + index + 1}
-                  </Table.Cell>
-                  <Table.Cell>{email}</Table.Cell>
-                  <Table.Cell>{balance} KCoins</Table.Cell>
-                </Table.Row>
-              ))
-            ) : (
-              <Dimmer active inverted>
-                <Loader />
-              </Dimmer>
-            )}
+            {users.map(({ email, balance }, index) => (
+              <Table.Row key={index}>
+                <Table.Cell>
+                  {(this.state.page - 1) * MAX_RECORDS + index + 1}
+                </Table.Cell>
+                <Table.Cell>{email}</Table.Cell>
+                <Table.Cell>{balance} KCoins</Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
           <Table.Footer>
             {numbOfPages > 1 ? (

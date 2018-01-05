@@ -19,7 +19,7 @@ class SystemStatistics extends Component {
           </Dimmer>
         ) : (
           <Card.Group itemsPerRow={3}>
-            <Card className="user">
+            <Card className="totaluser">
               <Card.Content>
                 <Card.Header className="statisticTitle">
                   Total Account

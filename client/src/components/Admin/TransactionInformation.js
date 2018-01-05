@@ -25,6 +25,9 @@ class TransactionInformation extends Component {
     };
     return (
       <Segment style={{ minHeight: "80vh", overFlow: "auto" }}>
+        <Dimmer active={trans.length === 0} inverted>
+          <Loader />
+        </Dimmer>
         <Table celled striped>
           <Table.Header>
             <Table.Row>
@@ -37,27 +40,21 @@ class TransactionInformation extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {trans.length !== 0 ? (
-              trans.map(
-                ({ from, to, value, status, transactionTimeStamp }, index) => (
-                  <Table.Row key={index}>
-                    <Table.Cell>
-                      {(this.state.page - 1) * MAX_RECORDS + index + 1}
-                    </Table.Cell>
-                    <Table.Cell>{from}</Table.Cell>
-                    <Table.Cell>{to}</Table.Cell>
-                    <Table.Cell>{value} Kcoins</Table.Cell>
-                    <Table.Cell>{statusString[status]}</Table.Cell>
-                    <Table.Cell>
-                      {new Date(transactionTimeStamp).toLocaleString()}
-                    </Table.Cell>
-                  </Table.Row>
-                )
+            {trans.map(
+              ({ from, to, value, status, transactionTimeStamp }, index) => (
+                <Table.Row key={index}>
+                  <Table.Cell>
+                    {(this.state.page - 1) * MAX_RECORDS + index + 1}
+                  </Table.Cell>
+                  <Table.Cell>{from}</Table.Cell>
+                  <Table.Cell>{to}</Table.Cell>
+                  <Table.Cell>{value} Kcoins</Table.Cell>
+                  <Table.Cell>{statusString[status]}</Table.Cell>
+                  <Table.Cell>
+                    {new Date(transactionTimeStamp).toLocaleString()}
+                  </Table.Cell>
+                </Table.Row>
               )
-            ) : (
-              <Dimmer active inverted>
-                <Loader />
-              </Dimmer>
             )}
           </Table.Body>
           <Table.Footer>
@@ -70,6 +67,7 @@ class TransactionInformation extends Component {
                     </Menu.Item>
                     {new Array(numbOfPages).fill(1).map((_, index) => (
                       <Menu.Item
+                        key={index}
                         as="a"
                         value={index + 1}
                         onClick={this.handleItemClick}
