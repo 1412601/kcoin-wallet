@@ -28,30 +28,36 @@ class Init extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {init.map(
-                (
-                  {
-                    _id,
-                    to,
-                    value,
-                    transHash,
-                    transactionTimeStamp,
-                    blockHash,
-                    blockTimeStamp
-                  },
-                  index
-                ) => (
-                  <Table.Row key={index}>
-                    <Table.Cell>{to}</Table.Cell>
-                    <Table.Cell>{value} Kcoin</Table.Cell>
-                    <Table.Cell>
-                      <Button.Group>
-                        <Modal2FA confirm id={_id} />
-                        <Button.Or />
-                        <Modal2FA id={_id} />
-                      </Button.Group>
-                    </Table.Cell>
-                  </Table.Row>
+              {init.length === 0 ? (
+                <Table.Row>
+                  <Table.Cell colSpan="3">There is no transaction</Table.Cell>
+                </Table.Row>
+              ) : (
+                init.map(
+                  (
+                    {
+                      _id,
+                      to,
+                      value,
+                      transHash,
+                      transactionTimeStamp,
+                      blockHash,
+                      blockTimeStamp
+                    },
+                    index
+                  ) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{to}</Table.Cell>
+                      <Table.Cell>{value} Kcoin</Table.Cell>
+                      <Table.Cell>
+                        <Button.Group>
+                          <Modal2FA confirm id={_id} />
+                          <Button.Or />
+                          <Modal2FA id={_id} />
+                        </Button.Group>
+                      </Table.Cell>
+                    </Table.Row>
+                  )
                 )
               )}
             </Table.Body>

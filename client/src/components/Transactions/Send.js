@@ -30,30 +30,36 @@ class Send extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {send.map(
-                (
-                  {
-                    to,
-                    value,
-                    transHash,
-                    transactionTimeStamp,
-                    blockHash,
-                    blockTimeStamp
-                  },
-                  index
-                ) => (
-                  <Table.Row key={index}>
-                    <Table.Cell>{to}</Table.Cell>
-                    <Table.Cell>{value}Kcoin</Table.Cell>
-                    <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
-                    <Table.Cell>
-                      {new Date(transactionTimeStamp).toLocaleString()}
-                    </Table.Cell>
-                    <Table.Cell>{blockHash.substring(0, 10)}...</Table.Cell>
-                    <Table.Cell>
-                      {new Date(blockTimeStamp).toLocaleString()}
-                    </Table.Cell>
-                  </Table.Row>
+              {send.length === 0 ? (
+                <Table.Row>
+                  <Table.Cell colSpan="6">There is no transaction</Table.Cell>
+                </Table.Row>
+              ) : (
+                send.map(
+                  (
+                    {
+                      to,
+                      value,
+                      transHash,
+                      transactionTimeStamp,
+                      blockHash,
+                      blockTimeStamp
+                    },
+                    index
+                  ) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{to}</Table.Cell>
+                      <Table.Cell>{value}Kcoin</Table.Cell>
+                      <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
+                      <Table.Cell>
+                        {new Date(transactionTimeStamp).toLocaleString()}
+                      </Table.Cell>
+                      <Table.Cell>{blockHash.substring(0, 10)}...</Table.Cell>
+                      <Table.Cell>
+                        {new Date(blockTimeStamp).toLocaleString()}
+                      </Table.Cell>
+                    </Table.Row>
+                  )
                 )
               )}
             </Table.Body>
