@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Message, Dimmer, Loader } from "semantic-ui-react";
+import { Dimmer, Loader, Segment, Card } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
+import "./styles.css";
 
 class SystemStatistics extends Component {
   componentDidMount() {
@@ -11,24 +12,58 @@ class SystemStatistics extends Component {
   render() {
     const { statistics } = this.props;
     return (
-      <div>
+      <Segment padded="very" style={{ minHeight: "80vh" }}>
         {statistics === null ? (
           <Dimmer active inverted>
             <Loader />
           </Dimmer>
         ) : (
-          <Message
-            positive
-            size="big"
-            header="System Statistics"
-            list={[
-              "Total Users: " + statistics.totalUser,
-              "Total Transactions: " + statistics.totalTransaction,
-              "System Balance: " + statistics.systemBalance + " KCoins"
-            ]}
-          />
+          <Card.Group itemsPerRow={3}>
+            <Card className="user">
+              <Card.Content>
+                <Card.Header className="statisticTitle">
+                  Total Account
+                </Card.Header>
+                <Card.Description>
+                  <span className="letter" data-letter={statistics.totalUser}>
+                    {statistics.totalUser}
+                  </span>
+                </Card.Description>
+              </Card.Content>
+            </Card>
+            <Card className="trans">
+              <Card.Content>
+                <Card.Header className="statisticTitle">
+                  Transactions
+                </Card.Header>
+                <Card.Description>
+                  <span
+                    className="letter"
+                    data-letter={statistics.totalTransaction}
+                  >
+                    {statistics.totalTransaction}
+                  </span>
+                </Card.Description>
+              </Card.Content>
+            </Card>
+            <Card className="balance">
+              <Card.Content>
+                <Card.Header className="statisticTitle">
+                  System Balance
+                </Card.Header>
+                <Card.Description>
+                  <span
+                    className="letter"
+                    data-letter={statistics.systemBalance}
+                  >
+                    {statistics.systemBalance}
+                  </span>
+                </Card.Description>
+              </Card.Content>
+            </Card>
+          </Card.Group>
         )}
-      </div>
+      </Segment>
     );
   }
 }

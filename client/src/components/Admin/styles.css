@@ -1,0 +1,78 @@
+.user {
+  background: linear-gradient(to right, #0cebeb, #20e3b2, #29ffc6) !important;
+}
+
+.trans {
+  background-image: radial-gradient(
+    #16d9e3 0%,
+    #30c7ec 47%,
+    #46aef7 100%
+  ) !important;
+}
+
+.balance {
+  background-image: linear-gradient(
+    to right,
+    #868f96 0%,
+    #596164 100%
+  ) !important;
+}
+
+.statisticTitle {
+  color: white !important;
+  font-size: 24px !important;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Lato:900);
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.letter {
+  display: inline-block !important;
+  font-weight: 900 !important;
+  font-size: 3em !important;
+  margin: 0.1em !important;
+  position: relative !important;
+  color: #00b4f1 !important;
+  transform-style: preserve-3d !important;
+  perspective: 400 !important;
+  z-index: 1 !important;
+  margin-top: 70px !important;
+}
+.letter:before,
+.letter:after {
+  position: absolute !important;
+  content: attr(data-letter) !important;
+  transform-origin: top left !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+.letter,
+.letter:before,
+.letter:after {
+  transition: all 0.3s ease-in-out !important;
+}
+.letter:before {
+  color: #fff !important;
+  text-shadow: -1px 0px 1px rgba(255, 255, 255, 0.8),
+    1px 0px 1px rgba(0, 0, 0, 0.8) !important;
+  z-index: 3 !important;
+  transform: rotateX(0deg) rotateY(-15deg) rotateZ(0deg) !important;
+}
+.letter:after {
+  color: rgba(0, 0, 0, 0.11) !important;
+  z-index: 2 !important;
+  transform: scale(1.08, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg)
+    skew(0deg, 1deg) !important;
+}
+.letter:hover:before {
+  color: #fafafa !important;
+  transform: rotateX(0deg) rotateY(-40deg) rotateZ(0deg) !important;
+}
+.letter:hover:after {
+  transform: scale(1.08, 1) rotateX(0deg) rotateY(40deg) rotateZ(0deg)
+    skew(0deg, 22deg) !important;
+}

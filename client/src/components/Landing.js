@@ -5,6 +5,12 @@ import axios from "axios";
 
 class Landing extends Component {
   state = { hideMess: true };
+
+  componentDidMount() {
+    if (this.props.auth !== null) {
+      this.props.history.push("/home");
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth !== null && nextProps.auth.isActivated) {
       this.props.history.push("/home");
