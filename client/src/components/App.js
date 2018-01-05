@@ -7,7 +7,7 @@ import * as action from "../actions";
 import Home from "./Home";
 import HeaderApp from "./Header";
 import Admin from "./Admin";
-import LandingPage from "./Landing";
+import Landing from "./Landing";
 
 class App extends Component {
   componentDidMount() {
@@ -18,10 +18,30 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Container>
-          <HeaderApp />
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/admin" component={Admin} />
+          <Route
+            exact
+            path="/"
+            render={props => [
+              <HeaderApp {...props} key={1} />,
+              <Landing {...props} key={2} />
+            ]}
+          />
+          <Route
+            exact
+            path="/home"
+            render={props => [
+              <HeaderApp {...props} key={1} />,
+              <Home {...props} key={2} />
+            ]}
+          />
+          <Route
+            exact
+            path="/admin"
+            render={props => [
+              <HeaderApp {...props} key={1} admin />,
+              <Admin {...props} key={2} />
+            ]}
+          />
         </Container>
       </BrowserRouter>
     );

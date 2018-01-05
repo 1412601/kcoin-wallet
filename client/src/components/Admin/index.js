@@ -1,6 +1,14 @@
 import React, { Component } from "react";
-import { Grid, Container, Menu } from "semantic-ui-react";
+import {
+  Grid,
+  Container,
+  Menu,
+  Form,
+  Segment,
+  Button
+} from "semantic-ui-react";
 import { connect } from "react-redux";
+import axios from "axios";
 import * as actions from "../../actions";
 
 import SystemStatistic from "./SystemStatistics";
@@ -16,7 +24,8 @@ class Admin extends Component {
       UsersInfo: <UserInformation />,
       TransInfo: <TransactionInformation />,
       AddressInfo: <AddressInformation />
-    }
+    },
+    login: false
   };
 
   componentWillMount() {
@@ -28,6 +37,26 @@ class Admin extends Component {
       activeItem: value,
       currentContent: this.state.content[value]
     });
+  };
+
+  handleChangeForm = (_, { name, value }) => {
+    this.setState({ [name]: value });
+  };
+
+  handleLogin = async () => {
+    const { username, password } = this.state;
+    try {
+      const { status, data } = await axios.post("/auth/admin", {
+        username,
+        password
+      });
+      console.log("ADMIN LOGIN", data);
+      if (status === 200) {
+        this.setState({ login: true });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   renderMenu() {
@@ -70,10 +99,53 @@ class Admin extends Component {
   render() {
     return (
       <Container padded="very">
-        <Grid>
-          <Grid.Column width={4}>{this.renderMenu()}</Grid.Column>
-          <Grid.Column width={12}>{this.state.currentContent}</Grid.Column>
-        </Grid>
+        {this.state.login ? (
+          <Grid>
+            <Grid.Column width={4}>{this.renderMenu()}</Grid.Column>
+            <Grid.Column width={12}>{this.state.currentContent}</Grid.Column>
+          </Grid>
+        ) : (
+          <div className="login-form" style={{ marginTop: 50 }}>
+            <Grid
+              textAlign="center"
+              style={{ height: "100%" }}
+              verticalAlign="middle"
+            >
+              <Grid.Column style={{ maxWidth: 450 }}>
+                <Form size="large">
+                  <Segment stacked>
+                    <Form.Input
+                      fluid
+                      icon="user"
+                      iconPosition="left"
+                      placeholder="E-mail address"
+                      name="username"
+                      onChange={this.handleChangeForm}
+                    />
+                    <Form.Input
+                      fluid
+                      icon="lock"
+                      iconPosition="left"
+                      placeholder="Password"
+                      type="password"
+                      name="password"
+                      onChange={this.handleChangeForm}
+                    />
+
+                    <Button
+                      color="teal"
+                      fluid
+                      size="large"
+                      onClick={this.handleLogin}
+                    >
+                      Login
+                    </Button>
+                  </Segment>
+                </Form>
+              </Grid.Column>
+            </Grid>
+          </div>
+        )}
       </Container>
     );
   }

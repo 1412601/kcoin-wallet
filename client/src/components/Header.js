@@ -52,21 +52,38 @@ class Header extends Component {
   render() {
     return (
       <Segment stackable="true">
-        <Menu inverted pointing color="teal">
-          <Container>
-            <Menu.Item header>
-              <Link to="/">
-                <Image
-                  size="mini"
-                  src="https://i.pinimg.com/originals/34/45/9f/34459f5c0a02012bbe64cf602e430427.jpg"
-                  style={{ marginRight: "1.5em", width: 30, height: 30 }}
-                />
-                Kcoin Wallet
-              </Link>
-            </Menu.Item>
-            <Menu.Menu position="right">{this.renderContent()}</Menu.Menu>
-          </Container>
-        </Menu>
+        {this.props.admin ? (
+          <Menu inverted pointing color="teal">
+            <Container>
+              <Menu.Item header>
+                <Link to="/admin">
+                  <Image
+                    size="mini"
+                    src="https://i.pinimg.com/originals/34/45/9f/34459f5c0a02012bbe64cf602e430427.jpg"
+                    style={{ marginRight: "1.5em", width: 30, height: 30 }}
+                  />
+                  Kcoin Wallet
+                </Link>
+              </Menu.Item>
+            </Container>
+          </Menu>
+        ) : (
+          <Menu inverted pointing color="teal">
+            <Container>
+              <Menu.Item header>
+                <Link to="/">
+                  <Image
+                    size="mini"
+                    src="https://i.pinimg.com/originals/34/45/9f/34459f5c0a02012bbe64cf602e430427.jpg"
+                    style={{ marginRight: "1.5em", width: 30, height: 30 }}
+                  />
+                  Kcoin Wallet
+                </Link>
+              </Menu.Item>
+              <Menu.Menu position="right">{this.renderContent()}</Menu.Menu>
+            </Container>
+          </Menu>
+        )}
       </Segment>
     );
   }
