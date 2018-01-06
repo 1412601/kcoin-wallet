@@ -23,7 +23,7 @@ module.exports = io => {
         transactions
       } = blockData;
 
-      transactions.forEach(async ({ hash }) => {
+      transactions.forEach(async ({ hash, outputs }) => {
         const trans = await Transaction.findOne({ transHash: hash });
         if (trans) {
           trans.blockHash = blockHash;
@@ -32,7 +32,28 @@ module.exports = io => {
           trans.status = 2;
 
           await trans.save();
-          console.log("UPDATED: ", trans);
+
+          // Update User wallet
+          const { from, to } = trans;
+          const fromUser = await User.findById(from);
+          const fromWallet = await Wallet.findOne({ _user: from });
+
+          const toUser = await User.findById(to);
+          const toWallet = await Wallet.findOne({ _user: to });
+
+          //UPDATE fromUser
+          fromUser.balance = outputs[0].value;
+          fromWallet.reference = [{ hash, index: 0 }];
+
+          //UPDATE toUser
+          toUser.balance += outputs[1].value;
+          toWallet.reference.push({ hash, index: 1 });
+
+          // Save to db
+          await fromUser.save();
+          await fromWallet.save();
+          await toUser.save();
+          await toWallet.save();
 
           //Send message to client
           io.on("connection", socket => {
