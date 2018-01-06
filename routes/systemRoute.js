@@ -12,7 +12,7 @@ module.exports = app => {
 
   app.get("/api/system/allUsers", async (req, res) => {
     const { page } = req.query;
-    const MAX_RECORDS = 5;
+    const MAX_RECORDS = 10;
     const allUser = await User.find({}, "email balance");
     const { length: count } = allUser;
     const numbOfPages = Math.ceil(count / MAX_RECORDS);
@@ -22,7 +22,7 @@ module.exports = app => {
 
   app.get("/api/system/transactions", async (req, res) => {
     const { page } = req.query;
-    const MAX_RECORDS = 5;
+    const MAX_RECORDS = 10;
     const allTransactions = await Transaction.find(
       {},
       "from to value status transactionTimeStamp"
@@ -48,7 +48,7 @@ module.exports = app => {
 
   app.get("/api/system/addresses", async (req, res) => {
     const { page } = req.query;
-    const MAX_RECORDS = 5;
+    const MAX_RECORDS = 10;
     const allAddress = await Wallet.find({}, "_user address").populate(
       "_user",
       "email balance"
