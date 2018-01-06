@@ -66,20 +66,8 @@ module.exports = app => {
       currentTrans.status = 1;
       currentTrans.transactionTimeStamp = Date.now();
 
-      //UPDATE fromUser
-      fromUser.balance = outputs[0].value;
-      fromWallet.reference = [{ hash, index: 0 }];
-
-      //UPDATE toUser
-      toUser.balance += outputs[1].value;
-      toWallet.reference.push({ hash, index: 1 });
-
       //Save to db
       const updateTrans = await currentTrans.save();
-      await fromUser.save();
-      await fromWallet.save();
-      await toUser.save();
-      await toWallet.save();
 
       res.send({ updateTrans });
     } catch (error) {
