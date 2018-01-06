@@ -84,18 +84,18 @@ module.exports = app => {
       }).save();
 
       //UPDATE admin
-      admin[0].referenceOutputHash = hash;
-      admin[0].balance = outputs[0].value;
-      await admin[0].save();
+      // admin[0].referenceOutputHash = hash;
+      // admin[0].balance = outputs[0].value;
+      // await admin[0].save();
 
-      //UPDATE user
-      user.balance += outputs[1].value;
-      userWallet.reference.push({
-        hash,
-        index: 1
-      });
-      await user.save();
-      await userWallet.save();
+      // //UPDATE user
+      // user.balance += outputs[1].value;
+      // userWallet.reference.push({
+      //   hash,
+      //   index: 1
+      // });
+      // await user.save();
+      // await userWallet.save();
 
       res.send({ data });
     } catch (error) {

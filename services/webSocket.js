@@ -1,6 +1,9 @@
 const WebSocket = require("ws");
 const wss = new WebSocket("wss://api.kcoin.club");
 const mongoose = require("mongoose");
+const User = mongoose.model("users");
+const Wallet = mongoose.model("wallets");
+const Admin = mongoose.model("admin");
 const Transaction = mongoose.model("transactions");
 
 module.exports = io => {
@@ -35,23 +38,22 @@ module.exports = io => {
 
           // Update User wallet
           const { from, to } = trans;
-          const fromUser = await User.findById(from);
-          const fromWallet = await Wallet.findOne({ _user: from });
 
+          //UPDATE Sender
+          if (from === "system") {
+            updateSystem(outputs, hash);
+          } else {
+            updateFromUser(from, outputs, hash);
+          }
+
+          //UPDATE Receiver
           const toUser = await User.findById(to);
           const toWallet = await Wallet.findOne({ _user: to });
 
-          //UPDATE fromUser
-          fromUser.balance = outputs[0].value;
-          fromWallet.reference = [{ hash, index: 0 }];
-
-          //UPDATE toUser
           toUser.balance += outputs[1].value;
           toWallet.reference.push({ hash, index: 1 });
 
           // Save to db
-          await fromUser.save();
-          await fromWallet.save();
           await toUser.save();
           await toWallet.save();
 
@@ -65,3 +67,25 @@ module.exports = io => {
     }
   });
 };
+
+async function updateSystem(outputs, hash) {
+  const system = await Admin.find({});
+  const admin = system[0];
+
+  admin.balance = outputs[0].value;
+  admin.referenceOutputHash = hash;
+  admin.referenceOutputIndex = 0;
+
+  await admin.save();
+}
+
+async function updateFromUser(from, outputs, hash) {
+  const fromUser = await User.findById(from);
+  const fromWallet = await Wallet.findOne({ _user: from });
+
+  fromUser.balance = outputs[0].value;
+  fromWallet.reference = [{ hash, index: 0 }];
+
+  await fromUser.save();
+  await fromWallet.save();
+}
