@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
+const http = require("http");
+const socketIo = require("socket.io");
 const key = require("./config/key");
 
 require("./models/User");
@@ -13,10 +15,19 @@ require("./models/ReferenceOutput");
 require("./models/Admin");
 
 require("./services/passport");
-//WEB SOCKET
-require("./services/webSocket");
 
 const app = express();
+
+//Socket IO
+const server = http.Server(app);
+const io = socketIo(server);
+
+io.on("connection", socket => {
+  socket.emit("INIT", { hello: "FK U" });
+});
+
+//WEB SOCKET
+require("./services/webSocket")(io);
 
 mongoose.connect(key.mongoURI);
 
@@ -51,4 +62,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+server.listen(PORT);
