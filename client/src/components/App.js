@@ -9,9 +9,14 @@ import HeaderApp from "./Header";
 import Admin from "./Admin";
 import Landing from "./Landing";
 
+import socket from "../utils/socketHelper";
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
+    socket.on("INIT", data => {
+      console.log("DATA", data);
+    });
   }
 
   render() {
