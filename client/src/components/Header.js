@@ -10,9 +10,10 @@ import {
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
+import * as actions from "../actions";
 
 class Header extends Component {
-  state = {};
+  state = { loading: false };
 
   renderContent() {
     return this.props.auth === null ? (
@@ -24,7 +25,11 @@ class Header extends Component {
     ) : (
       [
         <Menu.Item key={0}>
-          <Button color="red" onClick={this.handleGetCoin}>
+          <Button
+            color="red"
+            onClick={this.handleGetCoin}
+            loading={this.state.loading}
+          >
             FREE KCoin <Icon name="bitcoin" />
           </Button>
         </Menu.Item>,
@@ -41,9 +46,12 @@ class Header extends Component {
   }
 
   handleGetCoin = async () => {
+    this.setState({ loading: true });
     try {
       const { data } = await axios.get("/api/admin/getCoin");
-      console.log(data);
+      this.setState({ loading: false });
+      this.props.getCoinMessage();
+      console.log("GET COIN", data);
     } catch (error) {
       console.log(error);
     }
@@ -89,4 +97,6 @@ class Header extends Component {
   }
 }
 
-export default connect(({ authReducer }) => ({ auth: authReducer }))(Header);
+export default connect(({ authReducer }) => ({ auth: authReducer }), actions)(
+  Header
+);
