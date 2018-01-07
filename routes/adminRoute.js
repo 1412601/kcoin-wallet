@@ -82,7 +82,8 @@ module.exports = app => {
         value: SEND_VALUE,
         transHash: hash,
         transactionTimeStamp: Date.now(),
-        status: 1
+        status: 1,
+        index: 1
       }).save();
 
       //UPDATE admin

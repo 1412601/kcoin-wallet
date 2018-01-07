@@ -65,6 +65,7 @@ module.exports = app => {
       currentTrans.transHash = hash;
       currentTrans.status = 1;
       currentTrans.transactionTimeStamp = Date.now();
+      currentTrans.index = 1;
 
       //Save to db
       const updateTrans = await currentTrans.save();
