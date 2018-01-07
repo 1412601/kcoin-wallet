@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Transaction = mongoose.model("transactions");
 const User = mongoose.model("users");
 
+const helper = require("../utils/helper");
+
 module.exports = app => {
   app.get("/api/user/transaction", async (req, res) => {
     const { type } = req.query;
@@ -12,15 +14,7 @@ module.exports = app => {
             from: req.user.id,
             status: 2
           });
-          const trans = await Promise.all(
-            transactions.map(async trans => {
-              const fromUser = await User.findById(trans.from);
-              const toUser = await User.findById(trans.to);
-              trans.from = fromUser.email;
-              trans.to = toUser.email;
-              return trans;
-            })
-          );
+          const trans = await helper.getTransInfoWithUser(transactions);
           res.send(trans);
         }
         break;
@@ -30,17 +24,7 @@ module.exports = app => {
             to: req.user.id,
             status: 2
           });
-          const trans = await Promise.all(
-            transactions.map(async trans => {
-              const { from, to } = trans;
-              const fromUser =
-                from === "system" ? "System" : await User.findById(from);
-              const toUser = await User.findById(to);
-              trans.from = from === "system" ? "System" : fromUser.email;
-              trans.to = toUser.email;
-              return trans;
-            })
-          );
+          const trans = await helper.getTransInfoWithUser(transactions);
           res.send(trans);
         }
         break;
@@ -51,15 +35,7 @@ module.exports = app => {
             from: req.user.id,
             status: 0
           });
-          const trans = await Promise.all(
-            transactions.map(async trans => {
-              const fromUser = await User.findById(trans.from);
-              const toUser = await User.findById(trans.to);
-              trans.from = fromUser.email;
-              trans.to = toUser.email;
-              return trans;
-            })
-          );
+          const trans = await helper.getTransInfoWithUser(transactions);
           res.send(trans);
         }
         break;
@@ -70,17 +46,7 @@ module.exports = app => {
             from: req.user.id,
             status: 1
           });
-          const trans = await Promise.all(
-            transactions.map(async trans => {
-              const { from, to } = trans;
-              const fromUser =
-                from === "system" ? "System" : await User.findById(from);
-              const toUser = await User.findById(to);
-              trans.from = from === "system" ? "System" : fromUser.email;
-              trans.to = toUser.email;
-              return trans;
-            })
-          );
+          const trans = await helper.getTransInfoWithUser(transactions);
           res.send(trans);
         }
         break;

@@ -2,6 +2,8 @@ const axios = require("./axiosHelper");
 const transactions = require("./transactions");
 const crypto = require("crypto");
 const ursa = require("ursa");
+const mongoose = require("mongoose");
+const User = mongoose.model("users");
 
 const HASH_ALGORITHM = "sha256";
 
@@ -63,4 +65,29 @@ const getAddressFromPublicKey = publicKeyHex => {
   return hash.digest().toString("hex");
 };
 
-module.exports = { getOutputIndex, createTransaction, getAddressFromPublicKey };
+const getUser = async string => {
+  if (string.match(/^[0-9a-fA-F]{24}$/) || string !== "system") {
+    const user = await User.findById(string);
+    return user.email;
+  }
+  return string;
+};
+
+const getTransInfoWithUser = async transactions => {
+  return await Promise.all(
+    transactions.map(async trans => {
+      const { from, to } = trans;
+      trans.from = await getUser(from);
+      trans.to = await getUser(to);
+      return trans;
+    })
+  );
+};
+
+module.exports = {
+  getOutputIndex,
+  createTransaction,
+  getAddressFromPublicKey,
+  getUser,
+  getTransInfoWithUser
+};
