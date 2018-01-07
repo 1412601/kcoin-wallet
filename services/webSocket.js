@@ -1,3 +1,4 @@
+const helper = require("../utils/helper");
 const WebSocket = require("ws");
 const wss = new WebSocket("wss://api.kcoin.club");
 const mongoose = require("mongoose");
@@ -41,7 +42,7 @@ module.exports = io => {
 
           //UPDATE Sender
           if (from === "system") {
-            updateSystem(outputs, hash);
+            updateSystem(outputs);
           } else {
             updateFromUser(from, outputs, hash);
           }
@@ -64,17 +65,20 @@ module.exports = io => {
           });
         }
       });
+    } else if (data.type === "transaction") {
+      const { data: transData } = data;
+      const { inputs } = transData;
+      const unlockScript = inputs[0].unlockScript.split(" ");
+      const publicKey = unlockScript[1];
+      const address = helper.getAddressFromPublicKey(publicKey);
     }
   });
 };
 
-async function updateSystem(outputs, hash) {
+async function updateSystem(outputs) {
   const system = await Admin.find({});
   const admin = system[0];
-
   admin.balance = outputs[0].value;
-  admin.referenceOutputHash = hash;
-  admin.referenceOutputIndex = 0;
 
   await admin.save();
 }

@@ -1,5 +1,9 @@
 const axios = require("./axiosHelper");
 const transactions = require("./transactions");
+const crypto = require("crypto");
+const ursa = require("ursa");
+
+const HASH_ALGORITHM = "sha256";
 
 const getOutputIndex = async (transHash, address) => {
   const { data } = await axios.get(`/transactions/${transHash}`);
@@ -52,4 +56,11 @@ const createTransaction = (
   return bountyTransaction;
 };
 
-module.exports = { getOutputIndex, createTransaction };
+const getAddressFromPublicKey = publicKeyHex => {
+  let hash = crypto.createHash(HASH_ALGORITHM);
+  let publicKey = Buffer.from(publicKeyHex, "hex");
+  hash.update(publicKey);
+  return hash.digest().toString("hex");
+};
+
+module.exports = { getOutputIndex, createTransaction, getAddressFromPublicKey };
