@@ -9,7 +9,8 @@ const transactionSchema = new Schema({
   value: { type: Number, default: 0 },
   blockTimeStamp: Date,
   transactionTimeStamp: Date,
-  status: Number
+  status: Number,
+  index: Number
 });
 
 mongoose.model("transactions", transactionSchema);
