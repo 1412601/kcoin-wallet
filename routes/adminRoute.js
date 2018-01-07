@@ -17,7 +17,7 @@ const Transaction = mongoose.model("transactions");
 module.exports = app => {
   app.get("/admin/init", async (req, res) => {
     const referenceOutputHash =
-      "9e09a4143c78eef1875e2faf8d5b93aea5d7279c910209a55e9c258d8c3045fe";
+      "f3d218bad02b3d8069a46e8020de8ef620e1b03f5fa904061499631a94a1b985";
     const {
       value: balance,
       index: referenceOutputIndex
@@ -27,6 +27,8 @@ module.exports = app => {
     const existingAdmin = await Admin.findOne({ address });
     if (!existingAdmin) {
       const admin = await new Admin({
+        username: "admin",
+        password: "admin",
         address,
         publicKey,
         privateKey,
