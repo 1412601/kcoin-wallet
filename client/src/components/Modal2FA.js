@@ -13,7 +13,7 @@ import twoFactor from "node-2fa";
 import axios from "axios";
 
 class ModalConfirm extends Component {
-  state = { showModal: false, showMessage: false };
+  state = { showModal: false, showMessage: false, loading: false };
 
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value, showMessage: false });
@@ -30,6 +30,7 @@ class ModalConfirm extends Component {
 
   async handleConfirm() {
     const { confirm, id } = this.props;
+    this.setState({ loading: true });
     try {
       const { data } = confirm
         ? await axios.get(`/api/sendTransactions/${id}`)
@@ -38,14 +39,14 @@ class ModalConfirm extends Component {
       confirm ? this.props.confirmMessage() : this.props.cancelMessage();
       this.props.getInitTransaction();
       console.log("DATA", data);
-      this.setState({ showModal: false });
+      this.setState({ showModal: false, loading: false });
     } catch (error) {
       console.log(error);
     }
   }
   render() {
     const { confirm, auth } = this.props;
-    const { showModal, showMessage, number } = this.state;
+    const { showModal, showMessage, number, loading } = this.state;
     return (
       <Modal
         trigger={
@@ -98,7 +99,9 @@ class ModalConfirm extends Component {
             onChange={this.handleChange}
           >
             <input />
-            <Button onClick={this.handleSubmit}>Check</Button>
+            <Button onClick={this.handleSubmit} loading={loading}>
+              Check
+            </Button>
           </Input>
         </Modal.Content>
         <Modal.Actions>

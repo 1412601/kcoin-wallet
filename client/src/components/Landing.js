@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Header, Button, Message } from "semantic-ui-react";
+import { Header, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import axios from "axios";

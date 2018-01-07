@@ -1,13 +1,21 @@
 import React, { Component } from "react";
-import { Button, Form, Modal, Dropdown, Input } from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  Modal,
+  Dropdown,
+  Input,
+  Message
+} from "semantic-ui-react";
 import { connect } from "react-redux";
 import axios from "axios";
 import * as actions from "../actions";
 
 class InitTransaction extends Component {
-  state = { showModal: false, options: [], amount: 0 };
+  state = { showModal: false, options: [], amount: 0, loading: false };
 
   componentDidMount() {
+    this.forceUpdate();
     this.props.fetchAllUsersInformation();
   }
 
@@ -25,26 +33,51 @@ class InitTransaction extends Component {
   }
 
   handleChangeForm = (e, { name, value }) => {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, error: false });
   };
 
   handleSubmit = async () => {
     const { selectUser: toUser, amount: value } = this.state;
-    try {
-      const { data } = await axios.post("/api/initTransaction", {
-        toUser,
-        value
-      });
-      this.props.initMessage();
-      this.props.getInitTransaction();
-      console.log("DATA", data);
-      this.setState({ showModal: false });
-    } catch (error) {
-      console.error(error);
+    if (this.validInput()) {
+      this.setState({ loading: true });
+      try {
+        const { data } = await axios.post("/api/initTransaction", {
+          toUser,
+          value: parseInt(value, 10)
+        });
+        this.props.initMessage();
+        this.props.getInitTransaction();
+        this.props.getWallet();
+        console.log("DATA", data);
+        this.setState({
+          showModal: false,
+          loading: false,
+          options: [],
+          amount: 0
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
+
+  validInput() {
+    const { selectUser, amount } = this.state;
+    const valid = selectUser !== undefined && amount !== 0;
+    if (!valid) {
+      this.setState({ error: true });
+    }
+    return valid;
+  }
   render() {
-    const { showModal, options, selectUser, amount } = this.state;
+    const {
+      showModal,
+      options,
+      selectUser,
+      amount,
+      loading,
+      error
+    } = this.state;
     return (
       <Modal
         trigger={
@@ -62,6 +95,11 @@ class InitTransaction extends Component {
         size="small"
       >
         <Modal.Header>Make a transaction</Modal.Header>
+        <Message negative hidden={!error}>
+          <Message.Header>
+            Please choose user to transfer coin & valid input value
+          </Message.Header>
+        </Message>
         <Modal.Content image>
           <Modal.Description>
             <Form>
@@ -73,6 +111,7 @@ class InitTransaction extends Component {
                   options={options}
                   name="selectUser"
                   value={selectUser}
+                  error={error}
                   onChange={this.handleChangeForm}
                 />
               </Form.Field>
@@ -84,6 +123,7 @@ class InitTransaction extends Component {
                   type="number"
                   label={{ basic: true, content: "KCoin" }}
                   labelPosition="right"
+                  error={error}
                   onChange={this.handleChangeForm}
                 />
               </Form.Field>
@@ -94,7 +134,7 @@ class InitTransaction extends Component {
           <Button secondary onClick={() => this.setState({ showModal: false })}>
             Cancel
           </Button>
-          <Button primary onClick={this.handleSubmit}>
+          <Button primary onClick={this.handleSubmit} loading={loading}>
             Confirm
           </Button>
         </Modal.Actions>

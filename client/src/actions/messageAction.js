@@ -3,7 +3,8 @@ import {
   MESSAGE_CONFIRM,
   MESSAGE_CANCEL,
   MESSAGE_INIT,
-  REMOVE_MESSAGE
+  REMOVE_MESSAGE,
+  MESSAGE_GET_COIN
 } from "../actions/constants";
 
 export const resetMessage = () => dispatch => {
@@ -20,4 +21,7 @@ export const cancelMessage = () => dispatch => {
 };
 export const emailMessage = () => dispatch => {
   dispatch({ type: MESSAGE_EMAIL });
+};
+export const getCoinMessage = () => dispatch => {
+  dispatch({ type: MESSAGE_GET_COIN });
 };

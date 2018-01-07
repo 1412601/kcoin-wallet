@@ -3,7 +3,8 @@ import {
   MESSAGE_CONFIRM,
   MESSAGE_CANCEL,
   MESSAGE_INIT,
-  REMOVE_MESSAGE
+  REMOVE_MESSAGE,
+  MESSAGE_GET_COIN
 } from "../actions/constants";
 
 const initialState = {
@@ -39,6 +40,12 @@ export default (state = initialState, action) => {
       return {
         message: "We have sent activation link to your email. Please check!",
         type: 0
+      };
+    case MESSAGE_GET_COIN:
+      return {
+        message:
+          "You have requested KCoin successfully, transaction is pending now!",
+        type: 1
       };
     default:
       return state;
