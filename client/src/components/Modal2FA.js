@@ -8,6 +8,7 @@ import {
   Message
 } from "semantic-ui-react";
 import { connect } from "react-redux";
+import * as actions from "../actions";
 import twoFactor from "node-2fa";
 import axios from "axios";
 
@@ -34,6 +35,8 @@ class ModalConfirm extends Component {
         ? await axios.get(`/api/sendTransactions/${id}`)
         : await axios.delete(`/api/transaction/${id}`);
 
+      confirm ? this.props.confirmMessage() : this.props.cancelMessage();
+      this.props.getInitTransaction();
       console.log("DATA", data);
       this.setState({ showModal: false });
     } catch (error) {
@@ -108,6 +111,6 @@ class ModalConfirm extends Component {
   }
 }
 
-export default connect(({ authReducer }) => ({ auth: authReducer }))(
+export default connect(({ authReducer }) => ({ auth: authReducer }), actions)(
   ModalConfirm
 );

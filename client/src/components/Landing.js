@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Header, Button, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
+import * as action from "../actions";
 import axios from "axios";
 
 class Landing extends Component {
-  state = { hideMess: true };
+  state = {};
 
   componentDidMount() {
     if (this.props.auth !== null) {
@@ -18,21 +19,15 @@ class Landing extends Component {
   }
 
   handleActivate = async () => {
-    this.setState({ hideMess: false });
+    this.props.emailMessage();
     const { data } = await axios.get("/api/email/activate");
     console.log("SEND EMAILS", data);
   };
 
   render() {
     const { auth } = this.props;
-    const { hideMess } = this.state;
     return (
       <div style={{ textAlign: "center" }}>
-        <Message info hidden={hideMess}>
-          <Message.Header>
-            We have sent activation link to your email. Please check!
-          </Message.Header>
-        </Message>
         <Header as="h1" icon textAlign="center">
           <Header.Content>Welcome to Kcoin wallet</Header.Content>
         </Header>
@@ -54,4 +49,6 @@ class Landing extends Component {
   }
 }
 
-export default connect(({ authReducer }) => ({ auth: authReducer }))(Landing);
+export default connect(({ authReducer }) => ({ auth: authReducer }), actions)(
+  Landing
+);

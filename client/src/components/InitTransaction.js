@@ -35,6 +35,8 @@ class InitTransaction extends Component {
         toUser,
         value
       });
+      this.props.initMessage();
+      this.props.getInitTransaction();
       console.log("DATA", data);
       this.setState({ showModal: false });
     } catch (error) {
