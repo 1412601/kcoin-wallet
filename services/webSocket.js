@@ -16,7 +16,7 @@ module.exports = io => {
   });
 
   //UPDATE transactions that blocked
-  wss.on("message", dataString => {
+  wss.on("message", async dataString => {
     console.log("WEB SOCKET", dataString);
     const data = JSON.parse(dataString);
     if (data.type === "block") {
@@ -38,7 +38,7 @@ module.exports = io => {
           await trans.save();
 
           // Update User wallet
-          const { from, to } = trans;
+          const { from, to, index } = trans;
 
           //UPDATE Sender
           if (from === "system") {
@@ -51,8 +51,8 @@ module.exports = io => {
           const toUser = await User.findById(to);
           const toWallet = await Wallet.findOne({ _user: to });
 
-          toUser.balance += outputs[1].value;
-          toWallet.reference.push({ hash, index: 1 });
+          toUser.balance += outputs[index].value;
+          toWallet.reference.push({ hash, index });
 
           // Save to db
           await toUser.save();
@@ -67,10 +67,38 @@ module.exports = io => {
       });
     } else if (data.type === "transaction") {
       const { data: transData } = data;
-      const { inputs } = transData;
-      const unlockScript = inputs[0].unlockScript.split(" ");
-      const publicKey = unlockScript[1];
-      const address = helper.getAddressFromPublicKey(publicKey);
+      const { hash: transHash, inputs, outputs } = transData;
+      if (!isTransAvailable(transHash)) {
+        const address = helper.getAddressFromPublicKey(
+          inputs[0].unlockScript.split(" ")[1]
+        );
+        const outputData = await Promise.all(
+          outputs
+            .map(async ({ value, lockScript }, index) => {
+              //Check output belong to system
+              const wallet = await Wallet.findOne({
+                address: lockScript.substring(4)
+              }).populate({ _user });
+              return wallet !== null ? { value, index, wallet } : null;
+            })
+            .filter(output => output !== null)
+        );
+
+        if (outputData.length !== 0) {
+          outputData.forEach(async ({ value, index, wallet }) => {
+            const newTrans = await new Transaction({
+              from: address,
+              to: wallet._user._id,
+              value,
+              transHash,
+              transactionTimeStamp: Date.now(),
+              status: 1,
+              index
+            }).save();
+            console.log(newTrans);
+          });
+        }
+      }
     }
   });
 };
@@ -85,11 +113,18 @@ async function updateSystem(outputs) {
 
 async function updateFromUser(from, outputs, hash) {
   const fromUser = await User.findById(from);
-  const fromWallet = await Wallet.findOne({ _user: from });
+  if (fromUser !== null) {
+    const fromWallet = await Wallet.findOne({ _user: from });
 
-  fromUser.balance = outputs[0].value;
-  fromWallet.reference = [{ hash, index: 0 }];
+    fromUser.balance = outputs[0].value;
+    fromWallet.reference = [{ hash, index: 0 }];
 
-  await fromUser.save();
-  await fromWallet.save();
+    await fromUser.save();
+    await fromWallet.save();
+  }
+}
+
+async function isTransAvailable(transHash) {
+  const trans = await Transaction.findOne({ transHash });
+  return trans !== null;
 }
