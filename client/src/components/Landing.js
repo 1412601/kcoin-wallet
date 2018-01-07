@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Header, Button, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
-import * as action from "../actions";
+import * as actions from "../actions";
 import axios from "axios";
 
 class Landing extends Component {
