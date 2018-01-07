@@ -46,7 +46,7 @@ class TransactionInformation extends Component {
                   <Table.Cell>
                     {(this.state.page - 1) * MAX_RECORDS + index + 1}
                   </Table.Cell>
-                  <Table.Cell>{from.substring(0, 10)}...</Table.Cell>
+                  <Table.Cell>{from.substring(0, 10)}</Table.Cell>
                   <Table.Cell>{to}</Table.Cell>
                   <Table.Cell>{value} Kcoins</Table.Cell>
                   <Table.Cell>{statusString[status]}</Table.Cell>

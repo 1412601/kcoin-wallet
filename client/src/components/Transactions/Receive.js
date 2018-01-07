@@ -48,7 +48,7 @@ class Receive extends Component {
                     index
                   ) => (
                     <Table.Row key={index}>
-                      <Table.Cell>{from.substring(0, 10)}...</Table.Cell>
+                      <Table.Cell>{from.substring(0, 10)}</Table.Cell>
                       <Table.Cell>{value}Kcoin</Table.Cell>
                       <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                       <Table.Cell>
