@@ -3,6 +3,7 @@ const User = mongoose.model("users");
 const Transaction = mongoose.model("transactions");
 const Admin = mongoose.model("admin");
 const Wallet = mongoose.model("wallets");
+const helper = require("../utils/helper");
 
 module.exports = app => {
   app.get("/api/system/users", async (req, res) => {
@@ -30,20 +31,12 @@ module.exports = app => {
     const { length: count } = allTransactions;
     const numbOfPages = Math.ceil(count / MAX_RECORDS);
 
-    const trans = await Promise.all(
-      allTransactions
-        .slice((page - 1) * MAX_RECORDS, page * MAX_RECORDS)
-        .map(async trans => {
-          const { from, to } = trans;
-          const fromUser =
-            from === "system" ? "System" : await User.findById(from);
-          const toUser = await User.findById(to);
-          trans.from = from === "system" ? "System" : fromUser.email;
-          trans.to = toUser.email;
-          return trans;
-        })
+    const pageTransactions = allTransactions.slice(
+      (page - 1) * MAX_RECORDS,
+      page * MAX_RECORDS
     );
-    res.send({ trans, numbOfPages, MAX_RECORDS });
+    const transactions = await helper.getTransInfoWithUser(pageTransactions);
+    res.send({ trans: transactions, numbOfPages, MAX_RECORDS });
   });
 
   app.get("/api/system/addresses", async (req, res) => {
