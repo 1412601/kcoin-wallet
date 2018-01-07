@@ -66,7 +66,7 @@ const getAddressFromPublicKey = publicKeyHex => {
 };
 
 const getUser = async string => {
-  if (string.match(/^[0-9a-fA-F]{24}$/) || string !== "system") {
+  if (string.match(/^[0-9a-fA-F]{24}$/) && string !== "system") {
     const user = await User.findById(string);
     return user.email;
   }
