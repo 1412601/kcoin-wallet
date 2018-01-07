@@ -35,16 +35,14 @@ module.exports = io => {
           trans.blockTimeStamp = blockTimestamp * 1000;
           trans.status = 2;
 
-          await trans.save();
-
           // Update User wallet
           const { from, to, index } = trans;
 
           //UPDATE Sender
           if (from === "system") {
-            updateSystem(outputs);
+            await updateSystem(outputs);
           } else {
-            updateFromUser(from, outputs, hash);
+            await updateFromUser(from, outputs, hash);
           }
 
           //UPDATE Receiver
@@ -57,6 +55,9 @@ module.exports = io => {
           // Save to db
           await toUser.save();
           await toWallet.save();
+          await trans.save();
+
+          console.log("UPDATE TRANS", trans);
 
           //Send message to client
           io.on("connection", socket => {
@@ -68,34 +69,43 @@ module.exports = io => {
     } else if (data.type === "transaction") {
       const { data: transData } = data;
       const { hash: transHash, inputs, outputs } = transData;
-      if (!isTransAvailable(transHash)) {
-        const address = helper.getAddressFromPublicKey(
-          inputs[0].unlockScript.split(" ")[1]
-        );
-        const outputData = await Promise.all(
+      const address = helper.getAddressFromPublicKey(
+        inputs[0].unlockScript.split(" ")[1]
+      );
+      const checkAvailableTrans = await isTransAvailable(transHash, address);
+      console.log("TRANS AVAILABLE", checkAvailableTrans);
+
+      if (!checkAvailableTrans) {
+        let outputData = await Promise.all(
           outputs
             .map(async ({ value, lockScript }, index) => {
               //Check output belong to system
               const wallet = await Wallet.findOne({
                 address: lockScript.substring(4)
-              }).populate({ _user });
+              });
               return wallet !== null ? { value, index, wallet } : null;
             })
             .filter(output => output !== null)
         );
 
+        outputData = outputData.filter(output => output !== null);
+
+        console.log("OUTPUT DATA", outputData);
+
         if (outputData.length !== 0) {
           outputData.forEach(async ({ value, index, wallet }) => {
+            const user = await User.findById(wallet._user);
+            console.log("USER", user);
             const newTrans = await new Transaction({
               from: address,
-              to: wallet._user._id,
+              to: user._id,
               value,
               transHash,
               transactionTimeStamp: Date.now(),
               status: 1,
               index
             }).save();
-            console.log(newTrans);
+            console.log("NEW TRANS", newTrans);
           });
         }
       }
@@ -112,8 +122,8 @@ async function updateSystem(outputs) {
 }
 
 async function updateFromUser(from, outputs, hash) {
-  const fromUser = await User.findById(from);
-  if (fromUser !== null) {
+  if (from.match(/^[0-9a-fA-F]{24}$/)) {
+    const fromUser = await User.findById(from);
     const fromWallet = await Wallet.findOne({ _user: from });
 
     fromUser.balance = outputs[0].value;
@@ -124,7 +134,8 @@ async function updateFromUser(from, outputs, hash) {
   }
 }
 
-async function isTransAvailable(transHash) {
-  const trans = await Transaction.findOne({ transHash });
-  return trans !== null;
+async function isTransAvailable(transHash, address) {
+  const admin = await Admin.find({ address });
+  const wallet = await Wallet.find({ address });
+  return admin.length !== 0 || wallet.length !== 0;
 }
