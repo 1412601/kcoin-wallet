@@ -4,7 +4,9 @@ import {
   MESSAGE_CANCEL,
   MESSAGE_INIT,
   REMOVE_MESSAGE,
-  MESSAGE_GET_COIN
+  MESSAGE_GET_COIN,
+  MESSAGE_EMPTY_BALANCE,
+  MESSAGE_NEW_TRANS
 } from "../actions/constants";
 
 const initialState = {
@@ -46,6 +48,16 @@ export default (state = initialState, action) => {
         message:
           "You have requested KCoin successfully, transaction is pending now!",
         type: 1
+      };
+    case MESSAGE_EMPTY_BALANCE:
+      return {
+        message: "You don't have enough coin to create new transactions!",
+        type: 2
+      };
+    case MESSAGE_NEW_TRANS:
+      return {
+        message: `You have been receive a transaction from ${action.address}`,
+        type: 0
       };
     default:
       return state;

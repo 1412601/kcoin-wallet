@@ -15,8 +15,13 @@ import socket from "../utils/socketHelper";
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
-    socket.on("INIT", data => {
-      console.log("DATA", data);
+    socket.on("NEW", address => {
+      console.log("NEW", address);
+      this.props.newTrans(address);
+    });
+    socket.on("UPDATE", () => {
+      console.log("UPDATE");
+      this.props.getWallet();
     });
   }
 
