@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Transaction = mongoose.model("transactions");
 const User = mongoose.model("users");
 const TransactionConfirmationEmailTemp = require("../services/emailTemplate/transactionConfirmEmail");
-
+const Mailer = require("../services/Mailer");
 const helper = require("../utils/helper");
 
 module.exports = app => {
@@ -67,8 +67,10 @@ module.exports = app => {
     const subject =
       "[KCoin Wallet] Transaction " + type + "ing needs confirmation";
     const recipients = [{ email: req.user.email }];
-    const trans = await Transaction.findById(req.body.id);
-
+    let trans = await Transaction.findById(req.body.id);
+    const { to } = trans;
+    trans.from = req.user.email;
+    trans.to = helper.getUser(from);
     try {
       const mailer = new Mailer(
         { subject, recipients },
