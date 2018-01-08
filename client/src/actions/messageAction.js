@@ -6,7 +6,8 @@ import {
   REMOVE_MESSAGE,
   MESSAGE_GET_COIN,
   MESSAGE_EMPTY_BALANCE,
-  MESSAGE_NEW_TRANS
+  MESSAGE_NEW_TRANS,
+  MESSAGE_CONFIRM_TRANS
 } from "../actions/constants";
 
 export const resetMessage = () => dispatch => {
@@ -32,4 +33,7 @@ export const emptyBalanceMessage = () => dispatch => {
 };
 export const newTrans = address => dispatch => {
   dispatch({ type: MESSAGE_NEW_TRANS, address });
+};
+export const confirmTransMessage = type => dispatch => {
+  dispatch({ type: MESSAGE_CONFIRM_TRANS, type });
 };

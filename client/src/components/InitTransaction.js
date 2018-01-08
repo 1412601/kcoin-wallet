@@ -5,7 +5,8 @@ import {
   Modal,
   Dropdown,
   Input,
-  Message
+  Message,
+  Checkbox
 } from "semantic-ui-react";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -18,7 +19,8 @@ class InitTransaction extends Component {
     amount: 0,
     loading: false,
     disable: false,
-    message: ""
+    message: "",
+    radio: "user"
   };
 
   componentDidMount() {
@@ -47,7 +49,13 @@ class InitTransaction extends Component {
     this.setState({ [name]: value, error: false });
   };
 
-  handleSubmit = async () => {
+  handleSubmit = () => {
+    this.state.radio === "user"
+      ? this.handleSelectUser()
+      : this.handleSelectAddress();
+  };
+
+  handleSelectUser = async () => {
     const { selectUser: toUser, amount: value } = this.state;
     if (this.validInput()) {
       this.setState({ loading: true });
@@ -69,6 +77,14 @@ class InitTransaction extends Component {
         console.error(error);
       }
     }
+  };
+
+  handleSelectAddress = () => {
+    alert("ABC");
+  };
+
+  handleRadio = (e, { value }) => {
+    this.setState({ radio: value });
   };
 
   validInput() {
@@ -98,7 +114,8 @@ class InitTransaction extends Component {
       loading,
       message,
       error,
-      disable
+      disable,
+      radio
     } = this.state;
     return (
       <Modal
@@ -124,18 +141,47 @@ class InitTransaction extends Component {
         <Modal.Content image>
           <Modal.Description>
             <Form>
-              <Form.Field>
-                <label>Select user</label>
-                <Dropdown
-                  selection
-                  search
-                  fluid
-                  options={options}
-                  name="selectUser"
-                  value={selectUser}
-                  onChange={this.handleChangeForm}
+              <Form.Group>
+                <Form.Field width={5}>
+                  <Checkbox
+                    label="Select user"
+                    radio
+                    value="user"
+                    checked={radio === "user"}
+                    onChange={this.handleRadio}
+                  />
+                </Form.Field>
+                <Form.Field width={11}>
+                  <Dropdown
+                    selection
+                    search
+                    fluid
+                    options={options}
+                    name="selectUser"
+                    value={selectUser}
+                    onChange={this.handleChangeForm}
+                    disabled={radio !== "user"}
+                  />
+                </Form.Field>
+              </Form.Group>
+              <Form.Group>
+                <Form.Field width={5}>
+                  <Checkbox
+                    label="Address"
+                    radio
+                    value="address"
+                    checked={radio === "address"}
+                    onChange={this.handleRadio}
+                  />
+                </Form.Field>
+                <Form.Input
+                  name=""
+                  width={11}
+                  placeholder="Address outside system"
+                  disabled={radio !== "address"}
                 />
-              </Form.Field>
+              </Form.Group>
+
               <Form.Field>
                 <label>Amount</label>
                 <Input
