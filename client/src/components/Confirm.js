@@ -13,7 +13,7 @@ import axios from "axios";
 import * as actions from "../actions";
 
 class Confirm extends Component {
-  state = { showMessage: false, loading: false };
+  state = { showMessage: false, loading: false, message: "" };
 
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value, showMessage: false });
@@ -23,7 +23,12 @@ class Confirm extends Component {
     this.setState({ loading: true });
     const verify = twoFactor.verifyToken(key.secret, this.state.number);
     if (!verify || verify.delta !== 0) {
-      this.setState({ showMessage: true, number: "", loading: false });
+      this.setState({
+        showMessage: true,
+        number: "",
+        loading: false,
+        message: "Wrong token!"
+      });
     } else {
       this.handleConfirm();
     }
@@ -45,12 +50,16 @@ class Confirm extends Component {
       this.setState({ showModal: false, loading: false });
     } catch (error) {
       console.log(error);
+      this.setState({
+        showMessage: true,
+        message: "Transaction is currently sending!"
+      });
     }
   }
   render() {
     const { type } = this.props.match.params;
     const { auth } = this.props;
-    const { showMessage, number, loading } = this.state;
+    const { showMessage, number, loading, message } = this.state;
     return (
       <Segment
         padded="very"
@@ -59,7 +68,7 @@ class Confirm extends Component {
         }}
       >
         <Message negative hidden={!showMessage}>
-          <Message.Header>Wrong token!</Message.Header>
+          <Message.Header>{message}</Message.Header>
         </Message>
         <div>
           <Header
