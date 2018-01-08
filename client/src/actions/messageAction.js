@@ -4,7 +4,9 @@ import {
   MESSAGE_CANCEL,
   MESSAGE_INIT,
   REMOVE_MESSAGE,
-  MESSAGE_GET_COIN
+  MESSAGE_GET_COIN,
+  MESSAGE_EMPTY_BALANCE,
+  MESSAGE_NEW_TRANS
 } from "../actions/constants";
 
 export const resetMessage = () => dispatch => {
@@ -24,4 +26,10 @@ export const emailMessage = () => dispatch => {
 };
 export const getCoinMessage = () => dispatch => {
   dispatch({ type: MESSAGE_GET_COIN });
+};
+export const emptyBalanceMessage = () => dispatch => {
+  dispatch({ type: MESSAGE_EMPTY_BALANCE });
+};
+export const newTrans = address => dispatch => {
+  dispatch({ type: MESSAGE_NEW_TRANS, address });
 };

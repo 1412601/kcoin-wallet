@@ -12,14 +12,25 @@ import axios from "axios";
 import * as actions from "../actions";
 
 class InitTransaction extends Component {
-  state = { showModal: false, options: [], amount: 0, loading: false };
+  state = {
+    showModal: false,
+    options: [],
+    amount: 0,
+    loading: false,
+    disable: false,
+    message: ""
+  };
 
   componentDidMount() {
-    this.forceUpdate();
     this.props.fetchAllUsersInformation();
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.auth !== null) {
+      if (this.props.auth.balance === 0) {
+        this.setState({ disable: true });
+      }
+    }
     if (nextProps.users.length !== 0) {
       const options = nextProps.users
         .map(({ _id, email }) => ({
@@ -47,7 +58,6 @@ class InitTransaction extends Component {
         });
         this.props.initMessage();
         this.props.getInitTransaction();
-        this.props.getWallet();
         console.log("DATA", data);
         this.setState({
           showModal: false,
@@ -63,11 +73,21 @@ class InitTransaction extends Component {
 
   validInput() {
     const { selectUser, amount } = this.state;
-    const valid = selectUser !== undefined && amount !== 0;
-    if (!valid) {
-      this.setState({ error: true });
-    }
-    return valid;
+    const empty = selectUser !== undefined && amount > 0;
+    const valid = this.props.auth.balance >= amount;
+    !empty
+      ? this.setState({
+          error: true,
+          message: "Please choose user to transfer coin & valid input value"
+        })
+      : !valid
+        ? this.setState({
+            error: true,
+            message: "Input must less then your balance"
+          })
+        : null;
+
+    return valid && empty;
   }
   render() {
     const {
@@ -76,7 +96,9 @@ class InitTransaction extends Component {
       selectUser,
       amount,
       loading,
-      error
+      message,
+      error,
+      disable
     } = this.state;
     return (
       <Modal
@@ -89,6 +111,7 @@ class InitTransaction extends Component {
             color="teal"
             style={{ margin: 10 }}
             onClick={() => this.setState({ showModal: true })}
+            disabled={disable}
           />
         }
         open={showModal}
@@ -96,9 +119,7 @@ class InitTransaction extends Component {
       >
         <Modal.Header>Make a transaction</Modal.Header>
         <Message negative hidden={!error}>
-          <Message.Header>
-            Please choose user to transfer coin & valid input value
-          </Message.Header>
+          <Message.Header>{message}</Message.Header>
         </Message>
         <Modal.Content image>
           <Modal.Description>
@@ -107,11 +128,11 @@ class InitTransaction extends Component {
                 <label>Select user</label>
                 <Dropdown
                   selection
+                  search
                   fluid
                   options={options}
                   name="selectUser"
                   value={selectUser}
-                  error={error}
                   onChange={this.handleChangeForm}
                 />
               </Form.Field>
@@ -123,7 +144,6 @@ class InitTransaction extends Component {
                   type="number"
                   label={{ basic: true, content: "KCoin" }}
                   labelPosition="right"
-                  error={error}
                   onChange={this.handleChangeForm}
                 />
               </Form.Field>

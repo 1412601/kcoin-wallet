@@ -38,6 +38,7 @@ class ModalConfirm extends Component {
 
       confirm ? this.props.confirmMessage() : this.props.cancelMessage();
       this.props.getInitTransaction();
+      this.props.getWallet();
       console.log("DATA", data);
       this.setState({ showModal: false, loading: false });
     } catch (error) {
