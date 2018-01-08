@@ -35,5 +35,5 @@ export const newTrans = address => dispatch => {
   dispatch({ type: MESSAGE_NEW_TRANS, address });
 };
 export const confirmTransMessage = type => dispatch => {
-  dispatch({ type: MESSAGE_CONFIRM_TRANS, type });
+  dispatch({ type: MESSAGE_CONFIRM_TRANS, payload: type });
 };
