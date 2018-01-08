@@ -19,13 +19,13 @@ export default (state = initialState, action) => {
     case FETCH_USER_WALLET:
       return { ...state, wallet: action.payload };
     case GET_SEND_TRANSACTION:
-      return { ...state, send: action.payload };
+      return { ...state, send: action.payload.reverse() };
     case GET_RECEIVE_TRANSACTION:
-      return { ...state, receive: action.payload };
+      return { ...state, receive: action.payload.reverse() };
     case GET_INIT_TRANSACTION:
-      return { ...state, init: action.payload };
+      return { ...state, init: action.payload.reverse() };
     case GET_PENDING_TRANSACTION:
-      return { ...state, pending: action.payload };
+      return { ...state, pending: action.payload.reverse() };
     default:
       return state;
   }
