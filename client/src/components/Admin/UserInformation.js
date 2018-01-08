@@ -31,16 +31,18 @@ class UserInformation extends Component {
               <Table.HeaderCell>#</Table.HeaderCell>
               <Table.HeaderCell>Email</Table.HeaderCell>
               <Table.HeaderCell>Balance</Table.HeaderCell>
+              <Table.HeaderCell>Available balance</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {users.map(({ email, balance }, index) => (
+            {users.map(({ user, availableBalance }, index) => (
               <Table.Row key={index}>
                 <Table.Cell>
                   {(this.state.page - 1) * MAX_RECORDS + index + 1}
                 </Table.Cell>
-                <Table.Cell>{email}</Table.Cell>
-                <Table.Cell>{balance} KCoins</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>{user.balance} KCoins</Table.Cell>
+                <Table.Cell>{availableBalance} KCoins</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

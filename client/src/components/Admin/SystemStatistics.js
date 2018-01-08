@@ -60,10 +60,10 @@ class SystemStatistics extends Component {
               noMargin="true"
             >
               <Header className="statisticTitle" size="large">
-                Balance
+                Balance / Available Balance
               </Header>
               <span className="letter" data-letter={statistics.systemBalance}>
-                {statistics.systemBalance}
+                {statistics.systemBalance} / {statistics.availableBalance}
               </span>
             </SkewedContainer>
           </div>

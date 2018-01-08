@@ -62,9 +62,16 @@ class TransactionInformation extends Component {
                     >
                       {from}
                     </Popup>
-                    {/* {from.substring(0, 10)} */}
                   </Table.Cell>
-                  <Table.Cell>{to}</Table.Cell>
+                  <Table.Cell>
+                    <Popup
+                      trigger={<label>{to.substring(0, 10)}</label>}
+                      flowing
+                      hoverable
+                    >
+                      {to}
+                    </Popup>
+                  </Table.Cell>
                   <Table.Cell>{value} Kcoins</Table.Cell>
                   <Table.Cell>{statusString[status]}</Table.Cell>
                   <Table.Cell>
