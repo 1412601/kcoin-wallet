@@ -6,7 +6,8 @@ import {
   REMOVE_MESSAGE,
   MESSAGE_GET_COIN,
   MESSAGE_EMPTY_BALANCE,
-  MESSAGE_NEW_TRANS
+  MESSAGE_NEW_TRANS,
+  MESSAGE_CONFIRM_TRANS
 } from "../actions/constants";
 
 const initialState = {
@@ -56,8 +57,15 @@ export default (state = initialState, action) => {
       };
     case MESSAGE_NEW_TRANS:
       return {
-        message: `You have been receive a transaction from ${action.address}`,
+        message: `You have been received a transaction from ${action.address}`,
         type: 0
+      };
+    case MESSAGE_CONFIRM_TRANS:
+      return {
+        message: `We have sent a ${
+          action.type
+        } transaction link to your email. Please check!`,
+        type: 1
       };
     default:
       return state;

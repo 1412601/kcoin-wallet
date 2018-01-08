@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import { Table, Segment, Loader, Dimmer, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
-import Modal2FA from "../Modal2FA";
-
+import axios from "axios";
 class Init extends Component {
   componentDidMount() {
     this.props.getInitTransaction();
+  }
+
+  async handleClick(id, type) {
+    try {
+      const { data } = await axios.post("/api/transactionConfirm/", {
+        id,
+        type
+      });
+      console.log("DATA", data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -51,9 +62,18 @@ class Init extends Component {
                       <Table.Cell>{value} Kcoin</Table.Cell>
                       <Table.Cell>
                         <Button.Group>
-                          <Modal2FA confirm id={_id} />
+                          <Button
+                            positive
+                            onClick={() => this.handleClick(_id, "confirm")}
+                          >
+                            Confirm
+                          </Button>
                           <Button.Or />
-                          <Modal2FA id={_id} />
+                          <Button
+                            onClick={() => this.handleClick(_id, "cancel")}
+                          >
+                            Cancel
+                          </Button>
                         </Button.Group>
                       </Table.Cell>
                     </Table.Row>
