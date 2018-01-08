@@ -14,11 +14,27 @@ module.exports = app => {
   app.get("/api/system/allUsers", async (req, res) => {
     const { page } = req.query;
     const MAX_RECORDS = 10;
-    const allUser = await User.find({}, "email balance");
+    const users = await User.find({}, "email balance");
+    const allUser = await Promise.all(
+      users.map(async user => {
+        const hangingTrans = await Transaction.find({
+          from: user._id,
+          status: 1
+        });
+        const availableBalance =
+          user.balance -
+          hangingTrans.reduce((sum, { value }) => sum + value, 0);
+
+        return { user, availableBalance };
+      })
+    );
     const { length: count } = allUser;
     const numbOfPages = Math.ceil(count / MAX_RECORDS);
-    const users = allUser.slice((page - 1) * MAX_RECORDS, page * MAX_RECORDS);
-    res.send({ users, numbOfPages, MAX_RECORDS });
+    const limitUser = allUser.slice(
+      (page - 1) * MAX_RECORDS,
+      page * MAX_RECORDS
+    );
+    res.send({ users: limitUser, numbOfPages, MAX_RECORDS });
   });
 
   app.get("/api/system/transactions", async (req, res) => {
@@ -66,12 +82,29 @@ module.exports = app => {
         }
       }
     ]);
-    console.log(totalUserBalance);
-    //const { balance: systemBalance } = await Admin.findOne({}, "balance");
+
+    const users = await User.find({}, "balance");
+    const allUser = await Promise.all(
+      users.map(async user => {
+        const hangingTrans = await Transaction.find({
+          from: user._id,
+          status: 1
+        });
+        const availableBalance =
+          user.balance -
+          hangingTrans.reduce((sum, { value }) => sum + value, 0);
+
+        return availableBalance;
+      })
+    );
+
+    const availableBalance = allUser.reduce((sum, value) => sum + value, 0);
+
     res.send({
       totalUser,
       totalTransaction,
-      systemBalance: totalUserBalance[0].balance
+      systemBalance: totalUserBalance[0].balance,
+      availableBalance
     });
   });
 };

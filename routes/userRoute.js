@@ -37,43 +37,51 @@ module.exports = app => {
 
   app.get("/api/sendTransactions/:idTrans", async (req, res) => {
     const currentTrans = await Transaction.findById(req.params.idTrans);
-    const { from, to, value } = currentTrans;
+    const { from, to, value, status } = currentTrans;
 
-    const fromUser = await User.findById(from);
-    const fromWallet = await Wallet.findOne({ _user: from });
+    if (status === 1 || status === 2) {
+      res.status(405).send();
+    } else {
+      const fromUser = await User.findById(from);
+      const fromWallet = await Wallet.findOne({ _user: from });
+      const { publicKey, privateKey, address, reference } = fromWallet;
 
-    const toUser = await User.findById(to);
-    const toWallet = await Wallet.findOne({ _user: to });
+      let sendAddress = to;
 
-    const { publicKey, privateKey, address, reference } = fromWallet;
-    const { address: sendAddress } = toWallet;
+      if (to.match(/^[0-9a-fA-F]{24}$/)) {
+        const toUser = await User.findById(to);
+        const toWallet = await Wallet.findOne({ _user: to });
 
-    // Create trans
-    const createTrans = helper.createTransaction(
-      { publicKey, privateKey, address },
-      reference,
-      fromUser.balance,
-      value,
-      sendAddress
-    );
+        sendAddress = toWallet.address;
+      }
 
-    try {
-      const { data } = await axios.post("/transactions", createTrans);
-      const { hash, outputs } = data;
+      // Create trans
+      const createTrans = helper.createTransaction(
+        { publicKey, privateKey, address },
+        reference,
+        fromUser.balance,
+        value,
+        sendAddress
+      );
 
-      //UPDATE Transaction
-      currentTrans.transHash = hash;
-      currentTrans.status = 1;
-      currentTrans.transactionTimeStamp = Date.now();
-      currentTrans.index = 1;
+      try {
+        const { data } = await axios.post("/transactions", createTrans);
+        const { hash, outputs } = data;
 
-      //Save to db
-      const updateTrans = await currentTrans.save();
+        //UPDATE Transaction
+        currentTrans.transHash = hash;
+        currentTrans.status = 1;
+        currentTrans.transactionTimeStamp = Date.now();
+        currentTrans.index = 1;
 
-      res.send({ updateTrans });
-    } catch (error) {
-      console.error(error);
-      res.send({ error });
+        //Save to db
+        const updateTrans = await currentTrans.save();
+
+        res.send({ updateTrans });
+      } catch (error) {
+        console.error(error);
+        res.send({ error });
+      }
     }
   });
 };
