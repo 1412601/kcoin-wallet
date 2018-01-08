@@ -44,15 +44,17 @@ module.exports = io => {
             : await updateFromUser(from, outputs, hash);
 
           //UPDATE Receiver
-          const toUser = await User.findById(to);
-          const toWallet = await Wallet.findOne({ _user: to });
+          if (to.match(/^[0-9a-fA-F]{24}$/)) {
+            const toUser = await User.findById(to);
+            const toWallet = await Wallet.findOne({ _user: to });
 
-          toUser.balance += outputs[index].value;
-          toWallet.reference.push({ hash, index });
+            toUser.balance += outputs[index].value;
+            toWallet.reference.push({ hash, index });
 
-          // Save to db
-          await toUser.save();
-          await toWallet.save();
+            // Save to db
+            await toUser.save();
+            await toWallet.save();
+          }
           await trans.save();
 
           console.log("UPDATE TRANS", trans);
