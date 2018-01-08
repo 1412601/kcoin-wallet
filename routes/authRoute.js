@@ -62,9 +62,8 @@ module.exports = app => {
 
   app.post("/auth/admin", async (req, res) => {
     const { username, password } = req.body;
-    const admin = await Admin.find({ username, passport });
-
-    if (admin === null) {
+    const admin = await Admin.find({ $and: [{ username }, { password }] });
+    if (admin.length === 0) {
       res.status(401).send({ error: "Wrong username or password" });
     } else {
       res.status(200).send({ message: "Success" });

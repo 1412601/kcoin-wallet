@@ -14,6 +14,9 @@ require("./models/Transaction");
 require("./models/ReferenceOutput");
 require("./models/Admin");
 
+//TEST purpose
+require("./models/Test");
+
 require("./services/passport");
 
 const app = express();
@@ -21,10 +24,6 @@ const app = express();
 //Socket IO
 const server = http.Server(app);
 const io = socketIo(server);
-
-io.on("connection", socket => {
-  socket.emit("INIT", { hello: "FK U" });
-});
 
 //WEB SOCKET
 require("./services/webSocket")(io);

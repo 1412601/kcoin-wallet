@@ -43,7 +43,7 @@ module.exports = app => {
       case "pending":
         {
           transactions = await Transaction.find({
-            from: req.user.id,
+            $or: [{ from: req.user.id }, { to: req.user.id }],
             status: 1
           });
           const trans = await helper.getTransInfoWithUser(transactions);
