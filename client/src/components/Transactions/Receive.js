@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Segment, Loader, Dimmer } from "semantic-ui-react";
+import { Table, Segment, Loader, Dimmer, Popup } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 class Receive extends Component {
@@ -48,7 +48,15 @@ class Receive extends Component {
                     index
                   ) => (
                     <Table.Row key={index}>
-                      <Table.Cell>{from.substring(0, 10)}</Table.Cell>
+                      <Table.Cell>
+                        <Popup
+                          trigger={<label>{from.substring(0, 10)}</label>}
+                          flowing
+                          hoverable
+                        >
+                          {from}
+                        </Popup>
+                      </Table.Cell>
                       <Table.Cell>{value}Kcoin</Table.Cell>
                       <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                       <Table.Cell>

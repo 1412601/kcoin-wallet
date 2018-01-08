@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Segment, Loader, Dimmer } from "semantic-ui-react";
+import { Table, Segment, Loader, Dimmer, Popup } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 class Pending extends Component {
@@ -20,6 +20,7 @@ class Pending extends Component {
           <Table striped>
             <Table.Header>
               <Table.Row>
+                <Table.HeaderCell>From user</Table.HeaderCell>
                 <Table.HeaderCell>To user</Table.HeaderCell>
                 <Table.HeaderCell>Value </Table.HeaderCell>
                 <Table.HeaderCell>Transaction hash</Table.HeaderCell>
@@ -38,7 +39,24 @@ class Pending extends Component {
                     index
                   ) => (
                     <Table.Row key={index}>
-                      <Table.Cell>{from}</Table.Cell>
+                      <Table.Cell>
+                        <Popup
+                          trigger={<label>{from.substring(0, 10)}</label>}
+                          flowing
+                          hoverable
+                        >
+                          {from}
+                        </Popup>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Popup
+                          trigger={<label>{to.substring(0, 10)}</label>}
+                          flowing
+                          hoverable
+                        >
+                          {to}
+                        </Popup>
+                      </Table.Cell>
                       <Table.Cell>{value}Kcoin</Table.Cell>
                       <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                       <Table.Cell>

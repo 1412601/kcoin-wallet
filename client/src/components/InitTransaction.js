@@ -79,8 +79,43 @@ class InitTransaction extends Component {
     }
   };
 
-  handleSelectAddress = () => {
-    alert("ABC");
+  handleSelectAddress = async () => {
+    const { address: toUser, amount: value } = this.state;
+    if (this.checkValidAddress(toUser)) {
+      this.setState({ loading: true });
+      try {
+        const { data } = await axios.post("/api/initTransaction", {
+          toUser,
+          value: parseInt(value, 10)
+        });
+        this.props.initMessage();
+        this.props.getInitTransaction();
+        console.log("DATA", data);
+        this.setState({
+          showModal: false,
+          loading: false,
+          options: [],
+          amount: 0
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      this.setState({
+        error: true,
+        message: "Input address or value is NOT valid!"
+      });
+    }
+  };
+
+  checkValidAddress = address => {
+    const { amount } = this.state;
+    const { availableBalance } = this.props.wallet;
+    return address !== undefined
+      ? address.match(/([A-Fa-f0-9]{64})/) !== null &&
+          amount > 0 &&
+          availableBalance >= amount
+      : false;
   };
 
   handleRadio = (e, { value }) => {
@@ -90,7 +125,9 @@ class InitTransaction extends Component {
   validInput() {
     const { selectUser, amount } = this.state;
     const empty = selectUser !== undefined && amount > 0;
-    const valid = this.props.auth.balance >= amount;
+    const valid = this.props.wallet.availableBalance >= amount;
+    console.log("AVAI", this.props.wallet.availableBalance);
+    console.log("VALID", valid);
     !empty
       ? this.setState({
           error: true,
@@ -99,7 +136,7 @@ class InitTransaction extends Component {
       : !valid
         ? this.setState({
             error: true,
-            message: "Input must less then your balance"
+            message: "Input must less than your balance"
           })
         : null;
 
@@ -115,7 +152,8 @@ class InitTransaction extends Component {
       message,
       error,
       disable,
-      radio
+      radio,
+      address
     } = this.state;
     return (
       <Modal
@@ -175,13 +213,14 @@ class InitTransaction extends Component {
                   />
                 </Form.Field>
                 <Form.Input
-                  name=""
+                  name="address"
                   width={11}
+                  value={address}
                   placeholder="Address outside system"
                   disabled={radio !== "address"}
+                  onChange={this.handleChangeForm}
                 />
               </Form.Group>
-
               <Form.Field>
                 <label>Amount</label>
                 <Input
@@ -210,9 +249,10 @@ class InitTransaction extends Component {
 }
 
 export default connect(
-  ({ adminReducer, authReducer }) => ({
+  ({ adminReducer, authReducer, userReducer }) => ({
     users: adminReducer.usersInformation,
-    auth: authReducer
+    auth: authReducer,
+    wallet: userReducer.wallet
   }),
   actions
 )(InitTransaction);
