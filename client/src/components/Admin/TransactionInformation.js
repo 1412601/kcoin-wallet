@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Icon, Menu, Table, Dimmer, Loader, Segment } from "semantic-ui-react";
+import {
+  Icon,
+  Menu,
+  Table,
+  Dimmer,
+  Loader,
+  Segment,
+  Popup
+} from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 
@@ -46,7 +54,16 @@ class TransactionInformation extends Component {
                   <Table.Cell>
                     {(this.state.page - 1) * MAX_RECORDS + index + 1}
                   </Table.Cell>
-                  <Table.Cell>{from.substring(0, 10)}</Table.Cell>
+                  <Table.Cell>
+                    <Popup
+                      trigger={<label>{from.substring(0, 10)}</label>}
+                      flowing
+                      hoverable
+                    >
+                      {from}
+                    </Popup>
+                    {/* {from.substring(0, 10)} */}
+                  </Table.Cell>
                   <Table.Cell>{to}</Table.Cell>
                   <Table.Cell>{value} Kcoins</Table.Cell>
                   <Table.Cell>{statusString[status]}</Table.Cell>

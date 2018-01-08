@@ -25,7 +25,8 @@ class Admin extends Component {
       TransInfo: <TransactionInformation />,
       AddressInfo: <AddressInformation />
     },
-    login: false
+    login: false,
+    error: false
   };
 
   componentWillMount() {
@@ -40,7 +41,7 @@ class Admin extends Component {
   };
 
   handleChangeForm = (_, { name, value }) => {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, error: false });
   };
 
   handleLogin = async () => {
@@ -56,6 +57,7 @@ class Admin extends Component {
       }
     } catch (error) {
       console.log(error);
+      this.setState({ error: true });
     }
   };
 
@@ -97,6 +99,7 @@ class Admin extends Component {
   }
 
   render() {
+    const { error } = this.state;
     return (
       <Container padded="very">
         {this.state.login ? (
@@ -120,6 +123,7 @@ class Admin extends Component {
                       iconPosition="left"
                       placeholder="E-mail address"
                       name="username"
+                      error={error}
                       onChange={this.handleChangeForm}
                     />
                     <Form.Input
@@ -129,6 +133,7 @@ class Admin extends Component {
                       placeholder="Password"
                       type="password"
                       name="password"
+                      error={error}
                       onChange={this.handleChangeForm}
                     />
 

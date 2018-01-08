@@ -33,9 +33,12 @@ class Pending extends Component {
                 </Table.Row>
               ) : (
                 pending.map(
-                  ({ to, value, transHash, transactionTimeStamp }, index) => (
+                  (
+                    { from, to, value, transHash, transactionTimeStamp },
+                    index
+                  ) => (
                     <Table.Row key={index}>
-                      <Table.Cell>{to}</Table.Cell>
+                      <Table.Cell>{from}</Table.Cell>
                       <Table.Cell>{value}Kcoin</Table.Cell>
                       <Table.Cell>{transHash.substring(0, 10)}...</Table.Cell>
                       <Table.Cell>
