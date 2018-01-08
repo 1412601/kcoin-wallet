@@ -1,13 +1,13 @@
 const key = require("../../config/key");
 
-module.exports = (email, trans) => {
+module.exports = (email, trans, type) => {
   return `
   <html>
   <body>
     <div style="text-align: left;">
       <h3>Kcoin Wallet</h3>
       <p>Hi,</p>
-      <p>Your new Kcoin Wallet transaction has been initialized. Please check the information below.</p>
+      <p>Your request to ${type} your transaction need confirmation. Please check the information below.</p>
       <h4>Transaction Information</h3>
       <div>
         <p>From: ${trans.from}</p>
@@ -15,12 +15,9 @@ module.exports = (email, trans) => {
         <p>Amount: ${trans.value}</p>
       </div>
       <h4>Please confirm so we can proceeed your transaction: 
-        <a href="${key.redirectDomain}/api/transaction/${
-    trans.id
+        <a href="${key.redirectDomain}/transaction/${type}}/${
+    trans._id
   }/confirm">Confirm</a>
-        || <a href="${key.redirectDomain}/api/transaction/${
-    trans.id
-  }/cancel">Cancel</a>
       </h3>
     </div>
   </body>
