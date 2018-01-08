@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Transaction = mongoose.model("transactions");
 const User = mongoose.model("users");
+const TransactionConfirmationEmailTemp = require("../services/emailTemplate/transactionConfirmEmail");
 
 const helper = require("../utils/helper");
 
@@ -59,5 +60,24 @@ module.exports = app => {
       await transaction.remove();
       res.send("Deleted!");
     } else res.send("Not found");
+  });
+
+  app.post("/api/transactionConfirm", async (req, res) => {
+    const { type } = req.body;
+    const subject =
+      "[KCoin Wallet] Transaction " + type + "ing needs confirmation";
+    const recipients = [{ email: req.user.email }];
+    const trans = await Transaction.findById(req.body.id);
+
+    try {
+      const mailer = new Mailer(
+        { subject, recipients },
+        TransactionConfirmationEmailTemp(trans, type)
+      );
+      await mailer.send();
+      res.send("Mail sent. Check email");
+    } catch (err) {
+      res.send("Failed to sent mail.");
+    }
   });
 };
