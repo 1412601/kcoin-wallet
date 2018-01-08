@@ -1,15 +1,24 @@
 .totaluser {
   background: linear-gradient(to right, #0cebeb, #20e3b2, #29ffc6) !important;
+  width: 100% !important;
+}
+
+.totaluser > div {
+  overflow: hidden !important;
 }
 
 .trans {
-  background-image: radial-gradient(
-    #16d9e3 0%,
-    #30c7ec 47%,
-    #46aef7 100%
-  ) !important;
+  background: linear-gradient(to right, #7f00ff, #e100ff);
 }
 
+.trans > div {
+  overflow: hidden !important;
+}
+
+.totalTransRight {
+  position: absolute !important;
+  right: 0px !important;
+}
 .balance {
   background-image: linear-gradient(
     to right,
@@ -17,30 +26,39 @@
     #596164 100%
   ) !important;
 }
+.balance > div {
+  overflow: hidden !important;
+}
 
 .statisticTitle {
   color: white !important;
   font-size: 24px !important;
+  margin: 20px !important;
 }
-
+.statisticTitleRight {
+  color: white !important;
+  font-size: 24px !important;
+  margin: 20px !important;
+  text-align: right;
+}
 @import url(https://fonts.googleapis.com/css?family=Lato:900);
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
-
 .letter {
   display: inline-block !important;
   font-weight: 900 !important;
-  font-size: 3em !important;
+  font-size: 4em !important;
   margin: 0.1em !important;
   position: relative !important;
   color: #00b4f1 !important;
   transform-style: preserve-3d !important;
   perspective: 400 !important;
   z-index: 1 !important;
-  margin-top: 70px !important;
+  margin-top: 10px !important;
+  margin: 20px !important;
 }
 .letter:before,
 .letter:after {
