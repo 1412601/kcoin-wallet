@@ -70,7 +70,7 @@ module.exports = app => {
     let trans = await Transaction.findById(req.body.id);
     const { to } = trans;
     trans.from = req.user.email;
-    trans.to = helper.getUser(from);
+    trans.to = await helper.getUser(to);
     try {
       const mailer = new Mailer(
         { subject, recipients },
