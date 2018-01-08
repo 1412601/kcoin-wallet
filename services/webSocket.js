@@ -39,11 +39,9 @@ module.exports = io => {
           const { from, to, index } = trans;
 
           //UPDATE Sender
-          if (from === "system") {
-            await updateSystem(outputs);
-          } else {
-            await updateFromUser(from, outputs, hash);
-          }
+          from === "system"
+            ? await updateSystem(outputs)
+            : await updateFromUser(from, outputs, hash);
 
           //UPDATE Receiver
           const toUser = await User.findById(to);
@@ -58,12 +56,7 @@ module.exports = io => {
           await trans.save();
 
           console.log("UPDATE TRANS", trans);
-
-          //Send message to client
-          io.on("connection", socket => {
-            console.log("CLIENT CONNECTED");
-            socket.emit("update trans", trans);
-          });
+          io.emit("UPDATE");
         }
       });
     } else if (data.type === "transaction") {
@@ -106,6 +99,9 @@ module.exports = io => {
               index
             }).save();
             console.log("NEW TRANS", newTrans);
+            //Send message to client
+
+            io.emit("NEW", address);
           });
         }
       }
@@ -122,6 +118,7 @@ async function updateSystem(outputs) {
 }
 
 async function updateFromUser(from, outputs, hash) {
+  // Check valid user id or address
   if (from.match(/^[0-9a-fA-F]{24}$/)) {
     const fromUser = await User.findById(from);
     const fromWallet = await Wallet.findOne({ _user: from });
@@ -137,5 +134,6 @@ async function updateFromUser(from, outputs, hash) {
 async function isTransAvailable(transHash, address) {
   const admin = await Admin.find({ address });
   const wallet = await Wallet.find({ address });
+
   return admin.length !== 0 || wallet.length !== 0;
 }
