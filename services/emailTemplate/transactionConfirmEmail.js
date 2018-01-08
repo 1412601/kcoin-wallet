@@ -1,6 +1,6 @@
 const key = require("../../config/key");
 
-module.exports = (email, trans, type) => {
+module.exports = (trans, type) => {
   return `
   <html>
   <body>
