@@ -58,7 +58,20 @@ module.exports = app => {
   app.get("/api/system/statistics", async (req, res) => {
     const totalUser = await User.count({});
     const totalTransaction = await Transaction.count({});
-    const { balance: systemBalance } = await Admin.findOne({}, "balance");
-    res.send({ totalUser, totalTransaction, systemBalance });
+    const totalUserBalance = await User.aggregate([
+      {
+        $group: {
+          _id: null,
+          balance: { $sum: "$balance" }
+        }
+      }
+    ]);
+    console.log(totalUserBalance);
+    //const { balance: systemBalance } = await Admin.findOne({}, "balance");
+    res.send({
+      totalUser,
+      totalTransaction,
+      systemBalance: totalUserBalance[0].balance
+    });
   });
 };
