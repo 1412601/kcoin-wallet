@@ -63,7 +63,7 @@ export default (state = initialState, action) => {
     case MESSAGE_CONFIRM_TRANS:
       return {
         message: `We have sent a ${
-          action.type
+          action.payload
         } transaction link to your email. Please check!`,
         type: 1
       };
