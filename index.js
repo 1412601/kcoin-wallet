@@ -50,6 +50,16 @@ require("./routes/adminRoute")(app);
 require("./routes/transactionRoute")(app);
 require("./routes/systemRoute")(app);
 
+if (process.env.NODE_ENV === "dev") {
+  app.get("/transaction/:type/:id", (req, res) => {
+    const { type, id } = req.params;
+    res.writeHead(301, {
+      Location: `http://localhost:3000/transaction/${type}/${id}`
+    });
+    res.end();
+  });
+}
+
 //Production deployment
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

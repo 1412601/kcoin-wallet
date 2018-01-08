@@ -15,9 +15,9 @@ module.exports = (trans, type) => {
         <p>Amount: ${trans.value}</p>
       </div>
       <h4>Please confirm so we can proceeed your transaction: 
-        <a href="${key.redirectDomain}/transaction/${type}}/${
+        <a href="${key.redirectDomain}/transaction/${type}/${
     trans._id
-  }/confirm">Confirm</a>
+  }">Confirm</a>
       </h3>
     </div>
   </body>

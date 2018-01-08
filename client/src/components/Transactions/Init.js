@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table, Segment, Loader, Dimmer, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import axios from "axios";
+import * as actions from "../../actions";
 class Init extends Component {
   componentDidMount() {
     this.props.getInitTransaction();
@@ -14,6 +15,7 @@ class Init extends Component {
         type
       });
       console.log("DATA", data);
+      this.props.confirmTransMessage(type);
     } catch (error) {
       console.log(error);
     }
@@ -88,4 +90,7 @@ class Init extends Component {
   }
 }
 
-export default connect(({ userReducer }) => ({ init: userReducer.init }))(Init);
+export default connect(
+  ({ userReducer }) => ({ init: userReducer.init }),
+  actions
+)(Init);

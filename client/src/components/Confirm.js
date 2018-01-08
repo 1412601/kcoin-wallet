@@ -30,13 +30,16 @@ class Confirm extends Component {
   };
 
   async handleConfirm() {
-    const { confirm, id } = this.props;
+    const { type, id } = this.props.match.params;
     try {
-      const { data } = confirm
-        ? await axios.get(`/api/sendTransactions/${id}`)
-        : await axios.delete(`/api/transaction/${id}`);
+      const { data } =
+        type === "confirm"
+          ? await axios.get(`/api/sendTransactions/${id}`)
+          : await axios.delete(`/api/transaction/${id}`);
 
-      confirm ? this.props.confirmMessage() : this.props.cancelMessage();
+      type === "confirm"
+        ? this.props.confirmMessage()
+        : this.props.cancelMessage();
       this.props.history.push("/home");
       console.log("DATA", data);
       this.setState({ showModal: false, loading: false });
@@ -45,7 +48,6 @@ class Confirm extends Component {
     }
   }
   render() {
-    console.log("PROPS CONFIRM", this.props.match.params);
     const { type } = this.props.match.params;
     const { auth } = this.props;
     const { showMessage, number, loading } = this.state;
